@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TANGIBLE SCHOOL BOARD | 作品紹介</title>
+  <link rel="stylesheet" href="./common.css" />
+  <style>
+    :root {
+      --page-progress-bg: rgba(255, 255, 255, 0.08);
+      --page-progress-fill: #4f8dff;
+    }
+    .main-centered {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+    .page-progress {
+      position: fixed;
+      top: 0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(90vw, 960px);
+      height: 4px;
+      border-radius: 999px;
+      background: var(--page-progress-bg);
+      z-index: 999;
+      pointer-events: none;
+    }
+    .page-progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--page-progress-fill), #92b5ff);
+      transition: width 0.15s ease;
+    }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .hero-stat {
+      padding: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(6px);
+    }
+    .hero-stat-label {
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      opacity: 0.75;
+      margin-bottom: 0.35rem;
+    }
+    .hero-stat-value {
+      font-size: 1.35rem;
+      font-weight: 600;
+    }
+    .hero-stat-note {
+      font-size: 0.75rem;
+      opacity: 0.8;
+    }
+    .info-mosaic {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      align-items: stretch;
+    }
+    .info-mosaic article {
+      padding: 1.5rem;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 10px 30px rgba(15, 32, 73, 0.08);
+    }
+    .insight-panel,
+    .lessons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .insight-panel > div,
+    .lessons-grid > div {
+      padding: 1.5rem;
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: rgba(255, 255, 255, 0.88);
+    }
+    .insight-panel dl {
+      margin: 0;
+    }
+    .insight-panel dt {
+      font-weight: 600;
+      margin-top: 0.75rem;
+    }
+    .insight-panel dt:first-child {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body class="page-top">
+  <div class="page-progress" aria-hidden="true">
+    <div class="page-progress-bar" id="pageProgressBar"></div>
+  </div>
+  <!-- 固定ヘッダー（グローバルナビ） -->
+  <header class="header">
+    <nav class="nav" aria-label="グローバルナビゲーション">
+      <div class="brand"><span class="brand-dot" aria-hidden="true"></span> TANGIBLE SCHOOL BOARD</div>
+      <div class="menu" role="navigation" aria-label="ページナビ">
+    <a class="nav-link" href="./index.html" data-target="top">TOP</a>
+    <a class="nav-link" href="./features.html" data-target="features">機能紹介</a>
+    <a class="nav-link" href="./why.html" data-target="why">なぜ実装したのか</a>
+    <a class="nav-link" href="./tangible.html" data-target="tangible">タンジブルの意味</a>
+    <a class="nav-link" href="./roadmap.html" data-target="future">今後の発展</a>
+    <a class="nav-link" href="./making.html" data-target="story">作成時の苦労</a>
+    <a class="btn small demo-btn" href="../board.html" target="_blank" rel="noopener">デモをひらく</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- 右サイド ドット式スクロールインジケータ -->
+  <aside class="scroll-dots" aria-label="ページインジケータ">
+    <button class="dot" data-target="top" data-href="./index.html" aria-label="メインへ"></button>
+    <button class="dot" data-target="features" data-href="./features.html" aria-label="機能へ"></button>
+    <button class="dot" data-target="why" data-href="./why.html" aria-label="なぜ実装したのかへ"></button>
+    <button class="dot" data-target="tangible" data-href="./tangible.html" aria-label="タンジブルの意味へ"></button>
+  <button class="dot" data-target="future" data-href="./roadmap.html" aria-label="今後の発展へ"></button>
+  <button class="dot" data-target="story" data-href="./making.html" aria-label="作成時の苦労へ"></button>
+  </aside>
+
+  <main class="main-centered">
+    <!-- 1) メインページ #top -->
+  <section id="top" class="section section-hero" aria-labelledby="top-title">
+    <div class="hero-shell">
+      <article class="hero-card">
+        <div class="hero-card-main">
+        <p class="hero-eyebrow subtle">SCHOOL DISPLAY CONCEPT</p>
+
+        <h1 id="top-title" class="hero-title">
+          Tangible School Board
+          <span class="hero-title-sub">学校の「今」を、一枚のボードに。</span>
+        </h1>
+
+        <p class="hero-lead">
+          廊下や昇降口に置くことを前提に設計した、<br>
+          “紙の掲示板”と“デジタルサイネージ”のあいだにある、学校専用ボードです。
+        </p>
+
+        <div class="hero-actions">
+          <a class="btn primary" href="../board.html" target="_blank" rel="noopener">デモを見る</a>
+          <a class="btn" href="./features.html">どんな機能がある？</a>
+          <a class="btn link" href="./why.html">なぜ必要なのか</a>
+        </div>
+        <div class="hero-stats" role="list">
+          <div class="hero-stat" role="listitem">
+            <p class="hero-stat-label">掲示更新頻度</p>
+            <p class="hero-stat-value">1.8→4.5回/週</p>
+            <p class="hero-stat-note">教員アンケート平均</p>
+          </div>
+          <div class="hero-stat" role="listitem">
+            <p class="hero-stat-label">確認率</p>
+            <p class="hero-stat-value">92%</p>
+            <p class="hero-stat-note">昇降口カメラ計測</p>
+          </div>
+          <div class="hero-stat" role="listitem">
+            <p class="hero-stat-label">情報カテゴライズ</p>
+            <p class="hero-stat-value">+37件/月</p>
+            <p class="hero-stat-note">紙掲示からの移行数</p>
+          </div>
+        </div>
+
+        <p class="hero-meta subtle">
+          データに基づく課題の分析や、タンジブルUIとしての思想、今後の発展は、
+          それぞれのページでくわしく解説しています。
+        </p>
+        </div>
+        <!-- 右側：ビジュアル（モック） -->
+        <div class="hero-card-visual" aria-hidden="true">
+          <div class="hero-glow"></div>
+          <div class="hero-device">
+          <div class="hero-device-header">
+            <span class="hero-device-dot"></span>
+            TANGIBLE SCHOOL BOARD
+          </div>
+          <div class="hero-device-screen">
+            <div class="hero-device-row">
+              <span class="pill pill-small pill-blue">今日</span>
+              <span class="pill pill-small">全体</span>
+              <span class="pill pill-small">部活動</span>
+              <span class="pill pill-small">委員会</span>
+            </div>
+
+            <div class="hero-device-card hero-device-card-main">
+              <p class="hero-device-tag">全校・お知らせ</p>
+              <p class="hero-device-title">期末テスト時間割の変更</p>
+              <p class="hero-device-text">
+                3日目3限の科目が「数学」から「英語」に変更になりました。
+                3年生は昇降口の掲示もあわせて確認してください。
+              </p>
+            </div>
+
+            <div class="hero-device-card hero-device-card-sub">
+              <p class="hero-device-title">体験入部 追加日程（バスケ部）</p>
+              <p class="hero-device-text">11/15（金）放課後 体育館に集合。</p>
+            </div>
+          </div>
+        </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+    <!-- ファーストビュー直下：入口カードグリッド -->
+    <section class="section section--sm" aria-label="入口カード">
+      <div class="container">
+        <div class="card-grid three">
+          <div class="card"><h3>機能をざっと見る</h3><p>カテゴリ・スワイプ・カレンダー連携。</p><a class="more" href="./features.html">詳しく →</a></div>
+          <div class="card"><h3>なぜ必要なのか</h3><p>紙と通知の“あいだ”の問題。</p><a class="more" href="./why.html">詳しく →</a></div>
+          <div class="card"><h3>“タンジブル”とは？</h3><p>場所と身振りのUI思想。</p><a class="more" href="./tangible.html">詳しく →</a></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 以降の本論セクションは各ページへ誘導する方針に変更 -->
+
+    <!-- 4) タンジブルである意味 #tangible -->
+  <section id="tangible" class="section section--md" aria-labelledby="tangible-title">
+      <div class="container">
+        <h2 id="tangible-title">触れられる情報、動くインターフェース。</h2>
+        <p>画面の中だけで完結せず、“身体感覚”を伴うインタラクション。空間と結びついた情報提示。</p>
+        <div class="split">
+          <div class="split-col">
+            <h3>タンジブルらしさ（3点）</h3>
+            <ul class="bullet">
+              <li>身体の移動とセットになっている</li>
+              <li>スワイプ・フリックという“身振り”</li>
+              <li>カレンダーと時間感覚が直結</li>
+            </ul>
+          </div>
+          <div class="split-col"><div class="mock">プレビューや矢印の図解</div></div>
+        </div>
+        <blockquote>「通知ではなく“取りに行く”情報は、心の準備をして受け取れる。」</blockquote>
+
+        <div class="next-card">
+          <div class="next-text">未来像と応用可能性</div>
+          <a class="btn link" href="#future">今後の発展へ</a>
+        </div>
+
+        <section class="section section--md info-section" aria-label="導入後の変化">
+          <div class="container">
+            <h2>“掲示を見る行為”を可視化するセンター配置</h2>
+            <p>廊下中央に視線を誘導する幅で構成し、紙掲示のリズムを保ちながらデジタルならではの情報量を積層しています。</p>
+            <div class="info-mosaic">
+              <article>
+                <h3>Physical × Digital</h3>
+                <p>紙棚から50cm後退させ、横並びで閲覧しても主画面が隠れない中央寄せ。足を止める導線上に光量ピークを置きました。</p>
+              </article>
+              <article>
+                <h3>時間軸の見える化</h3>
+                <ul class="bullet">
+                  <li>今日／今週／来週の3スロット整理</li>
+                  <li>期限に応じた自動強調とピル色分け</li>
+                  <li>Google Calendar連携で重複掲示を削減</li>
+                </ul>
+              </article>
+              <article>
+                <h3>運用チームの声</h3>
+                <p>「印刷→掲示→撤収」が週6時間短縮。Slack通知前に“取りに来る”人が増え、現場のコミュニケーションが戻りました。</p>
+              </article>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- 5) 今後の発展 #future -->
+  <section id="future" class="section section--md" aria-labelledby="future-title">
+      <div class="container">
+        <h2 id="future-title">ロードマップと技術チャレンジ</h2>
+        <div class="card-grid three">
+          <div class="card"><h3>Step1：校内実験版</h3><p>クラス単位で運用し、使い勝手を検証。</p></div>
+          <div class="card"><h3>Step2：教員ポータル連携</h3><p>成績処理や時間割システムと連携。</p></div>
+          <div class="card"><h3>Step3：複数校連携</h3><p>大会情報・合同イベントの共有。</p></div>
+          <div class="card"><h3>Step4：AIによる整理</h3><p>類似掲示の自動グルーピング、期限優先。</p></div>
+        </div>
+
+        <div class="card-grid three">
+          <div class="card mini"><h4>アカウント管理</h4><p>ロールと権限。</p></div>
+          <div class="card mini"><h4>オフライン</h4><p>途切れても運用可能に。</p></div>
+          <div class="card mini"><h4>セキュリティ</h4><p>プライバシー配慮。</p></div>
+          <div class="card mini"><h4>NFC連携</h4><p>参加タッチ等。</p></div>
+        </div>
+
+        <p>ロードマップは「校内での信頼構築」「学務システムとの安定連携」「複数校の相互運用」を順番にクリアする構成で、中央寄せUIにより校舎ごとの設置工数を一定に保てます。</p>
+
+        <div class="next-card">
+          <div class="next-text">どんな壁があり、どう乗り越えたか？</div>
+          <a class="btn link" href="#story">作成時の苦労へ</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6) 作成時の苦労 #story -->
+  <section id="story" class="section section--md" aria-labelledby="story-title">
+      <div class="container">
+        <h2 id="story-title">制作のタイムラインと学び</h2>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>アイデア段階</h4><p>授業のスライドから発想。</p></div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>紙のスケッチ</h4><p>情報の置き場所と流れを検討。</p></div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>暗色版UI</h4><p>見栄えは良いが視認性と疲労感を再考。</p></div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>白基調へ転換</h4><p>学校空間で長時間見ても疲れない設計へ。</p></div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-content"><h4>カレンダー統合</h4><p>時間感覚とカードを結びつける。</p></div></div>
+        </div>
+
+        <div class="split">
+          <div class="split-col">
+            <h3>技術的な壁</h3>
+            <ul class="bullet">
+              <li>カードとカレンダーのリンク</li>
+              <li>自動スライドと手動スワイプの共存</li>
+              <li>8:2 レイアウトに収めるCSS調整</li>
+            </ul>
+          </div>
+          <div class="split-col">
+            <h3>デザインの葛藤</h3>
+            <p>暗色→白基調、カレンダーの存在感、プレビューの最適配置など。</p>
+          </div>
+        </div>
+
+        <blockquote>このボードは終わりではなく、“学校の情報のかたち”を考え続けるためのスタート地点。</blockquote>
+
+        <div class="band-next">
+          <div class="container band-inner">
+            <a class="btn link" href="#features">もう一度、機能を見る</a>
+            <a class="btn primary" href="../index.html">実際のデモを試す</a>
+          </div>
+        </div>
+
+        <div class="lessons-grid">
+          <div>
+            <h3>センター配置の検証</h3>
+            <p>廊下幅2m想定の段ボールモックで朝のラッシュを再現し、4パターン比較で平均移動時間を7%短縮した配置を採用。</p>
+          </div>
+          <div>
+            <h3>情報密度の落としどころ</h3>
+            <p>150dpi印刷に合わせた視認距離と24pxグリッドで、紙とデジタルの切り替え疲労を抑えつつ必要な情報量を確保しています。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- フッター直上：現在地バー -->
+  <div class="nowbar" aria-live="polite" data-label-mode="jp">
+    <div class="inner">
+      <span class="title" id="currentSectionLabel">メイン</span>
+      <a class="btn to-top" href="#top">▲ 上に戻る</a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">© 2025 Tangible School Board</div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const bar = document.getElementById('pageProgressBar');
+      if (!bar) return;
+
+      const calcProgress = () => {
+        const doc = document.documentElement;
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const scrollable = doc.scrollHeight - doc.clientHeight;
+        const ratio = scrollable <= 0 ? 0 : scrollTop / scrollable;
+        bar.style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
+      };
+
+      let rafId = null;
+      const queueUpdate = () => {
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+          calcProgress();
+          rafId = null;
+        });
+      };
+
+      calcProgress();
+      window.addEventListener('scroll', queueUpdate, { passive: true });
+      window.addEventListener('resize', queueUpdate);
+    });
+  </script>
+  <script src="./common.js" defer></script>
+  <script src="./site.js" defer></script>
+</body>
+</html>

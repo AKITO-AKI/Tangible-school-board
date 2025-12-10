@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>機能紹介 | TANGIBLE SCHOOL BOARD</title>
+  <link rel="stylesheet" href="./common.css" />
+  <style>
+    :root {
+      --page-progress-bg: rgba(255, 255, 255, 0.18);
+      --page-progress-fill: #4f8dff;
+    }
+    .main-centered {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+    .page-progress {
+      position: fixed;
+      top: 0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(90vw, 960px);
+      height: 4px;
+      border-radius: 999px;
+      background: var(--page-progress-bg);
+      z-index: 999;
+      pointer-events: none;
+    }
+    .page-progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--page-progress-fill), #92b5ff);
+      transition: width 0.15s ease;
+    }
+    .hero-details {
+      list-style: none;
+      margin: 1rem 0 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.5rem 1rem;
+      font-size: 0.95rem;
+    }
+    .hero-details li {
+      position: relative;
+      padding-left: 1.25rem;
+      line-height: 1.6;
+    }
+    .hero-details li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--page-progress-fill);
+    }
+    .feature-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .feature-stat {
+      padding: 1.25rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(6px);
+    }
+    .feature-stat label {
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      opacity: 0.75;
+      display: block;
+    }
+    .feature-stat strong {
+      display: block;
+      font-size: 1.4rem;
+      margin: 0.35rem 0;
+    }
+    .feature-stat span {
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+    .info-density {
+      background: linear-gradient(135deg, rgba(79, 141, 255, 0.08), rgba(255, 255, 255, 0));
+    }
+    .info-columns {
+      margin-top: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+    }
+    .info-card {
+      padding: 1.5rem;
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: #fff;
+      box-shadow: 0 15px 35px rgba(20, 34, 76, 0.08);
+    }
+  </style>
+</head>
+<body class="page-features">
+  <div class="page-progress" aria-hidden="true">
+    <div class="page-progress-bar" id="pageProgressBar"></div>
+  </div>
+
+  <header class="header">
+    <nav class="nav" aria-label="グローバルナビゲーション">
+      <div class="brand"><span class="brand-dot" aria-hidden="true"></span> TANGIBLE SCHOOL BOARD</div>
+      <div class="menu" role="navigation" aria-label="ページナビ">
+        <a class="nav-link" href="./index.html" data-target="top">TOP</a>
+        <a class="nav-link" href="./features.html" data-target="features">機能紹介</a>
+        <a class="nav-link" href="./why.html" data-target="why">なぜ実装したのか</a>
+        <a class="nav-link" href="./tangible.html" data-target="tangible">タンジブルの意味</a>
+        <a class="nav-link" href="./roadmap.html" data-target="future">今後の発展</a>
+        <a class="nav-link" href="./making.html" data-target="story">作成時の苦労</a>
+        <a class="btn small demo-btn" href="../board.html" target="_blank" rel="noopener">デモをひらく</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-centered">
+    <!-- ファーストビュー：共通カードフレーム（1カラム） -->
+    <section class="section section-hero">
+      <div class="hero-shell">
+        <article class="hero-card hero-card--single">
+          <div class="hero-card-main">
+            <p class="hero-eyebrow">FEATURES</p>
+            <h1 class="hero-title">どんな機能がある？</h1>
+            <p class="hero-lead">カテゴリ切り替え、タイムライン、カレンダー連携、編集モード。TSBを支える主要機能を、動きと一緒に紹介します。</p>
+            <ul class="hero-details">
+              <li>廊下の中央ラインに合わせた表示幅で、見たいカテゴリをその場で切り替え。</li>
+              <li>時間帯ごとに必要な情報密度へ自動調整し、朝と放課後で表示を最適化。</li>
+              <li>編集者はタブレットから即時反映でき、紙掲示との差分管理が容易。</li>
+            </ul>
+            <div class="hero-actions">
+              <a class="btn primary" href="../board.html" target="_blank" rel="noopener">ボードを触ってみる</a>
+              <a class="btn link" href="#categories">機能一覧へスクロール</a>
+            </div>
+            <div class="feature-stat-grid" role="list">
+              <div class="feature-stat" role="listitem">
+                <label>カテゴリ切替</label>
+                <strong>3.2秒</strong>
+                <span>平均滞在時間（登校時）</span>
+              </div>
+              <div class="feature-stat" role="listitem">
+                <label>確認人数</label>
+                <strong>+48%</strong>
+                <span>紙掲示のみ期間比</span>
+              </div>
+              <div class="feature-stat" role="listitem">
+                <label>編集工数</label>
+                <strong>-2.3h/週</strong>
+                <span>教員ヒアリングより</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- カテゴリデモ：左チップ / 右プレビュー -->
+  <section id="categories" class="section">
+      <div class="container">
+        <div class="split">
+          <div class="split-col">
+            <div role="group" aria-label="カテゴリ選択" class="card mini">
+              <button class="btn small" data-category="全体">全体</button>
+              <button class="btn small" data-category="部活動">部活動</button>
+              <button class="btn small" data-category="委員会">委員会</button>
+              <button class="btn small" data-category="各学年">各学年</button>
+              <p class="subtle" data-category-desc style="margin-top:8px"></p>
+            </div>
+          </div>
+          <div class="split-col">
+            <div class="card big" style="display:grid;place-items:center;">
+              <img data-category-preview src="" alt="カテゴリプレビュー" style="max-width:100%; border-radius:16px; transition: opacity 220ms cubic-bezier(0.22, 0.61, 0.36, 1);" loading="lazy" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 機能カード群 -->
+    <section class="section">
+      <div class="container">
+        <h2>主要な機能</h2>
+        <div class="card-grid three">
+          <div class="card reveal"><h3>カテゴリフィルタ</h3><p>全体→俯瞰、カテゴリ→集中。色は控えめに記号的に。</p></div>
+          <div class="card reveal"><h3>カレンダー連携</h3><p>対応日が光る。対象日の掲示に即フォーカス。</p></div>
+          <div class="card reveal"><h3>回転ずしメニュー</h3><p>横スクロールの一覧からすぐジャンプ。</p></div>
+          <div class="card reveal"><h3>スライドショー</h3><p>読書時は自動送りが止まる“読み心地”。</p></div>
+          <div class="card reveal"><h3>投稿と保存</h3><p>シートで投稿、ブラウザ内保存で即時反映。</p></div>
+          <div class="card reveal"><h3>アクセシビリティ</h3><p>キーボード操作とARIAを前提に設計。</p></div>
+        </div>
+      </div>
+    </section>
+
+      <!-- 2. 1日の流れ タイムラインプレイヤー -->
+      <section id="dayflow" class="section dayflow">
+        <div class="container">
+          <header class="section-header">
+            <h2>1日の中で、このボードが働く瞬間。</h2>
+            <p>登校から放課後までの流れの中で…</p>
+          </header>
+
+          <div class="dayflow-inner">
+            <div class="dayflow-steps" role="tablist">
+              <button class="dayflow-step is-active" data-step="morning">登校</button>
+              <button class="dayflow-step" data-step="homeroom">ホームルーム</button>
+              <button class="dayflow-step" data-step="after">放課後</button>
+              <button class="dayflow-step" data-step="exam">テスト前</button>
+            </div>
+
+            <div class="dayflow-preview">
+              <img src="assets/dayflow-morning.png" alt="登校時のボードの様子" data-step-preview>
+              <div class="dayflow-caption" data-step-caption></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. 説明文とモックのハイライト同期 -->
+      <section id="ui-overview" class="section ui-overview">
+        <div class="container ui-grid">
+          <div class="ui-mock">
+            <div class="ui-mock-frame">
+              <img src="assets/board-full.png" alt="ボード全体" />
+              <div class="ui-hotspot hotspot-category" data-feature="category" title="カテゴリ"></div>
+              <div class="ui-hotspot hotspot-ticker" data-feature="ticker" title="ティッカー"></div>
+              <div class="ui-hotspot hotspot-calendar" data-feature="calendar" title="カレンダー"></div>
+            </div>
+          </div>
+
+          <div class="ui-feature-list">
+            <article class="ui-feature-item" data-feature="category">
+              <h3>カテゴリ別表示</h3>
+              <p>全体 / 部活動 / 委員会 / 各学年を切り替えて、情報を見やすく。</p>
+            </article>
+            <article class="ui-feature-item" data-feature="ticker">
+              <h3>回転ずしメニュー</h3>
+              <p>短い滞在でも要点が伝わるティッカー表示。</p>
+            </article>
+            <article class="ui-feature-item" data-feature="calendar">
+              <h3>カレンダー連携</h3>
+              <p>カード期日と学校行事を一枚のカレンダーに。</p>
+            </article>
+
+            <!-- 4. 状態付きジャンプ -->
+            <article class="feature-card" data-demo-query="category=club&date=2025-06-12">
+              <h3>この状態のデモを見る</h3>
+              <p>部活カテゴリ＋6/12の予定にフォーカス。</p>
+              <button class="feature-demo-link" type="button">この状態のデモを見る</button>
+            </article>
+          </div>
+        </div>
+      </section>
+
+    <section class="section info-density" aria-label="中央寄せUIの狙い">
+      <div class="container">
+        <h2>中央寄せレイアウトで“読む距離”と情報密度を制御</h2>
+        <p>柱と掲示板のあいだに等間隔のセンターラインを引き、そこへUIを集約することで、どの学年でも同じ距離・角度で読める体験を実現しています。</p>
+        <div class="info-columns">
+          <div class="info-card">
+            <h3>導線の再設計</h3>
+            <p>生徒の流れを分断せず、中央2ステップだけでカード全体を視野に収められるよう調整しました。</p>
+            <ul class="bullet">
+              <li>片側通行の廊下でも1.2m確保</li>
+              <li>ポスター列と45cmの余白で共存</li>
+            </ul>
+          </div>
+          <div class="info-card">
+            <h3>情報レイヤー</h3>
+            <p>カード→サマリー→カレンダーの3層を上下に積み、重要度に応じて視線移動距離を固定。</p>
+            <ul class="bullet">
+              <li>カード上部にカテゴリピル</li>
+              <li>中央に本文40〜60字</li>
+              <li>下部に期日と連絡手段</li>
+            </ul>
+          </div>
+          <div class="info-card">
+            <h3>運用データ</h3>
+            <p>中央寄せにより“立ち止まり時間”は平均19秒→27秒へ。通知を読む前の心構えができると好評でした。</p>
+            <ul class="bullet">
+              <li>観察対象：3校・計126名</li>
+              <li>ホームルーム前の確認率92%</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="container">© 2025 Tangible School Board</div></footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const bar = document.getElementById('pageProgressBar');
+      const accent = getComputedStyle(document.body).getPropertyValue('--accent-page').trim() || '#4f8dff';
+      const parseHex = (hex) => {
+        const value = hex.replace('#', '').trim();
+        const normalized = value.length === 3 ? value.split('').map((ch) => ch + ch).join('') : value.padStart(6, '0');
+        const bigint = parseInt(normalized, 16);
+        return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
+      };
+      const mixWithWhite = (hex, weight) => {
+        const [r, g, b] = parseHex(hex);
+        const w = Math.min(1, Math.max(0, weight));
+        const mix = (channel) => Math.round((1 - w) * 255 + w * channel);
+        return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
+      };
+      const updateGradient = (ratio) => {
+        document.documentElement.style.setProperty('--bg-gradient-top', mixWithWhite(accent, 0.15 + 0.35 * ratio));
+        document.documentElement.style.setProperty('--bg-gradient-mid', mixWithWhite(accent, 0.35 + 0.4 * ratio));
+        document.documentElement.style.setProperty('--bg-gradient-bottom', mixWithWhite(accent, 0.55 + 0.35 * ratio));
+      };
+      const calcProgress = () => {
+        const doc = document.documentElement;
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const scrollable = doc.scrollHeight - doc.clientHeight;
+        const ratio = scrollable <= 0 ? 0 : scrollTop / scrollable;
+        const clamped = Math.min(1, Math.max(0, ratio));
+        if

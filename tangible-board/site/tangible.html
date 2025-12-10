@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>タンジブルの意味 | TANGIBLE SCHOOL BOARD</title>
+  <link rel="stylesheet" href="./common.css" />
+  <style>
+    :root {
+      --page-progress-bg: rgba(255, 255, 255, 0.16);
+      --page-progress-fill: #4f8dff;
+    }
+    .main-centered {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+    .page-progress {
+      position: fixed;
+      top: 0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(90vw, 960px);
+      height: 4px;
+      border-radius: 999px;
+      background: var(--page-progress-bg);
+      z-index: 999;
+      pointer-events: none;
+    }
+    .page-progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--page-progress-fill), #92b5ff);
+      transition: width 0.15s ease;
+    }
+    .hero-details {
+      list-style: none;
+      margin: 1rem 0 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.6rem 1rem;
+    }
+    .hero-details li {
+      position: relative;
+      padding-left: 1.3rem;
+      line-height: 1.6;
+    }
+    .hero-details li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--page-progress-fill);
+    }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .hero-stat {
+      padding: 1.2rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(6px);
+    }
+    .hero-stat label {
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      opacity: 0.75;
+      display: block;
+    }
+    .hero-stat strong {
+      display: block;
+      font-size: 1.35rem;
+      margin: 0.35rem 0;
+    }
+    .hero-stat span {
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+    .info-density {
+      background: linear-gradient(135deg, rgba(79, 141, 255, 0.08), rgba(255, 255, 255, 0));
+      border-radius: 24px;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+    .info-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+    .info-card {
+      padding: 1.5rem;
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: #fff;
+      box-shadow: 0 12px 30px rgba(20, 34, 76, 0.08);
+    }
+  </style>
+</head>
+<body class="page-tangible">
+  <div class="page-progress" aria-hidden="true">
+    <div class="page-progress-bar" id="pageProgressBar"></div>
+  </div>
+  <header class="header">
+    <nav class="nav">
+      <div class="brand"><span class="brand-dot"></span> TANGIBLE SCHOOL BOARD</div>
+      <div class="menu">
+        <a class="nav-link" href="./index.html">TOP</a>
+        <a class="nav-link" href="./features.html">機能紹介</a>
+        <a class="nav-link" href="./why.html">なぜ実装したのか</a>
+        <a class="nav-link" href="./tangible.html">タンジブルの意味</a>
+        <a class="nav-link" href="./roadmap.html">今後の発展</a>
+        <a class="nav-link" href="./making.html">作成時の苦労</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-centered">
+    <!-- ファーストビュー：共通カードフレーム（1カラム） -->
+    <section class="section section-hero">
+      <div class="hero-shell">
+        <article class="hero-card hero-card--single">
+          <div class="hero-card-main">
+            <p class="hero-eyebrow">TANGIBLE</p>
+            <h1 class="hero-title">“触れられる情報”としての掲示板。</h1>
+            <p class="hero-lead">SNS のタイムラインではなく、「決まった場所に行けば、今日の情報に触れられる」。その感覚をデジタルでもう一度つくるのが、Tangible School Board の発想です。</p>
+            <ul class="hero-details">
+              <li>廊下のセンターラインに合わせ、立ち位置と視線を“取りに行く”行為に戻す。</li>
+              <li>紙掲示との距離感を揃え、身体スケールで覚えられる情報レイヤーを設計。</li>
+              <li>触れる距離・眺める距離・歩きながらの距離を3段階で再現し、伝わり方を検証。</li>
+            </ul>
+            <div class="hero-actions">
+              <a class="btn primary" href="#distance">シーン別イメージを見る</a>
+            </div>
+            <div class="hero-stats" role="list">
+              <div class="hero-stat" role="listitem">
+                <label>立ち止まり時間</label>
+                <strong>+8秒</strong>
+                <span>紙掲示のみ比較</span>
+              </div>
+              <div class="hero-stat" role="listitem">
+                <label>距離分類</label>
+                <strong>3層</strong>
+                <span>触れる/読む/俯瞰の視距</span>
+              </div>
+              <div class="hero-stat" role="listitem">
+                <label>観察ログ</label>
+                <strong>126名</strong>
+                <span>3校でのフィールドノート</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+    <!-- sticky見出し＋背面シーンのクロスフェード -->
+    <section class="section">
+      <div class="container" style="position:relative;">
+        <div class="card big" style="position:sticky; top:20vh; z-index:2;">
+          <h2>なぜ“タンジブル”である必要があったか</h2>
+          <p class="subtle">身体を動かしてボードの前に立つ、視線の重心を“画面から廊下へ”移すための設計。</p>
+        </div>
+        <div class="mock" style="position:absolute; inset:0; z-index:1;">
+          <div class="scene-1" style="position:absolute; inset:0; opacity:1; transition:opacity 220ms cubic-bezier(0.22,0.61,0.36,1); display:grid; place-items:center;">スマホ通知が溢れる画面（イメージ）</div>
+          <div class="scene-2" style="position:absolute; inset:0; opacity:0; transition:opacity 220ms cubic-bezier(0.22,0.61,0.36,1); display:grid; place-items:center;">廊下でボードを見るシーン（イメージ）</div>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="card-grid three">
+          <div class="card"><h3>身体性</h3><p>移動とセット。立ち止まる行為そのものが情報取得。</p></div>
+          <div class="card"><h3>身振り</h3><p>スワイプ・フリックの直感操作。プレビューが理解を助ける。</p></div>
+          <div class="card"><h3>時間感覚</h3><p>カレンダーとリンクし、“今”と“次”が一目瞭然。</p></div>
+        </div>
+      </div>
+    </section>
+    <!-- 6. 距離スライダーで見え方変化 -->
+    <section id="distance" class="section distance-demo">
+      <div class="container distance-inner">
+        <div class="distance-mock">
+          <div class="distance-frame" data-distance-frame data-distance="mid">
+            <img src="assets/board-distance.png" alt="距離によって見え方が変わるボード">
+          </div>
+        </div>
+
+        <div class="distance-control">
+          <label for="distance-range">ボードとの距離</label>
+          <div class="distance-labels">
+            <span>近く</span>
+            <input type="range" id="distance-range" min="0" max="100" value="50">
+            <span>遠く</span>
+          </div>
+          <p class="distance-caption" data-distance-caption>教室の前を通りがかるときに、ざっと眺めるイメージ。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section info-density" aria-label="身体感覚と中央寄せUI">
+      <div class="container">
+        <h2>中央寄せで“身体を預ける”距離を固定化</h2>
+        <p>ボードの中心に立てば必ず重要情報が視野に入るよう、縦方向の情報レイヤーと光量ピークを中央へ寄せました。どの学校でも同じ体験になるよう、モジュール幅を24pxグリッドで統一しています。</p>
+        <div class="info-columns">
+          <div class="info-card">
+            <h3>距離と役割</h3>
+            <p>50cm＝触れて操作、120cm＝本文を読む、220cm＝カテゴリを把握。各距離に合わせた文字サイズとボタン配置を用意。</p>
+          </div>
+          <div class="info-card">
+            <h3>紙との共存</h3>
+            <p>紙掲示を左右に残し、中央列だけをデジタルにすることで「ここに来れば最新がある」という記憶を維持。</p>
+          </div>
+          <div class="info-card">
+            <h3>身体ログ</h3>
+            <p>肩の角度や足の向きをビデオで記録し、中央寄せUIで身体のひねり回数が34%減ったことを確認しました。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="container">© 2025 Tangible School Board</div></footer>
+  <script src="./common.js" defer></script>
+  <script>
+  (function(){
+    const prefersReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const s1 = document.querySelector('.scene-1');
+    const s2 = document.querySelector('.scene-2');
+    if (!s1 || !s2) return;
+    let toggled = false;
+    window.addEventListener('scroll', () => {
+      if (prefersReduce) return;
+      const vh = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+      const y = window.scrollY;
+      const threshold = vh * 0.35; // 35vh 付近で切替
+      const next = y > threshold;
+      if (next !== toggled){
+        toggled = next;
+        s1.style.opacity = next ? '0' : '1';
+        s2.style.opacity = next ? '1' : '0';
+      }
+    }, { passive:true });
+  })();
+  </script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const bar = document.getElementById('pageProgressBar');
+      if (!bar) return;
+
+      const calcProgress = () => {
+        const doc = document.documentElement;
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const scrollable = doc.scrollHeight - doc.clientHeight;
+        const ratio = scrollable <= 0 ? 0 : scrollTop / scrollable;
+        bar.style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
+      };
+
+      let rafId = null;
+      const queueUpdate = () => {
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+          calcProgress();
+          rafId = null;
+        });
+      };
+
+      calcProgress();
+      window.addEventListener('scroll', queueUpdate, { passive: true });
+      window.addEventListener('resize', queueUpdate);
+    });
+  </script>
+</body>
+</html>

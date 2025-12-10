@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>今後の発展 | TANGIBLE SCHOOL BOARD</title>
+  <link rel="stylesheet" href="./common.css" />
+  <style>
+    :root {
+      --page-progress-bg: rgba(255, 255, 255, 0.16);
+      --page-progress-fill: #4f8dff;
+    }
+    .main-centered {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+    .page-progress {
+      position: fixed;
+      top: 0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(90vw, 960px);
+      height: 4px;
+      border-radius: 999px;
+      background: var(--page-progress-bg);
+      z-index: 999;
+      pointer-events: none;
+    }
+    .page-progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--page-progress-fill), #92b5ff);
+      transition: width 0.15s ease;
+    }
+    .hero-details {
+      list-style: none;
+      margin: 1rem 0 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 0.5rem 1rem;
+    }
+    .hero-details li {
+      position: relative;
+      padding-left: 1.3rem;
+      line-height: 1.6;
+    }
+    .hero-details li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--page-progress-fill);
+    }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .hero-stat {
+      padding: 1.2rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(6px);
+    }
+    .hero-stat label {
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      opacity: 0.75;
+      display: block;
+    }
+    .hero-stat strong {
+      display: block;
+      font-size: 1.35rem;
+      margin: 0.35rem 0;
+    }
+    .hero-stat span {
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+    .info-density {
+      background: linear-gradient(135deg, rgba(79, 141, 255, 0.08), rgba(255, 255, 255, 0));
+      border-radius: 24px;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+    .info-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+    .info-card {
+      padding: 1.5rem;
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: #fff;
+      box-shadow: 0 12px 30px rgba(20, 34, 76, 0.08);
+    }
+  </style>
+</head>
+<body class="page-roadmap">
+  <div class="page-progress" aria-hidden="true">
+    <div class="page-progress-bar" id="pageProgressBar"></div>
+  </div>
+  <header class="header">
+    <nav class="nav">
+      <div class="brand"><span class="brand-dot"></span> TANGIBLE SCHOOL BOARD</div>
+      <div class="menu">
+        <a class="nav-link" href="./index.html">TOP</a>
+        <a class="nav-link" href="./features.html">機能紹介</a>
+        <a class="nav-link" href="./why.html">なぜ実装したのか</a>
+        <a class="nav-link" href="./tangible.html">タンジブルの意味</a>
+        <a class="nav-link" href="./roadmap.html">今後の発展</a>
+        <a class="nav-link" href="./making.html">作成時の苦労</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-centered">
+    <!-- ファーストビュー：共通カードフレーム（右にミニステップ） -->
+    <section class="section section-hero">
+      <div class="hero-shell">
+        <article class="hero-card">
+          <div class="hero-card-main">
+            <p class="hero-eyebrow">ROADMAP</p>
+            <h1 class="hero-title">教室から、学校全体、そしてその先へ。</h1>
+            <p class="hero-lead">まずは1クラス・1フロアから。運用の実験を重ねながら、校内全体、さらには複数校へと広げていく計画です。</p>
+            <ul class="hero-details">
+              <li>校舎の中央ラインに合わせたUI幅を維持し、どの拠点でも同じ体験を提供。</li>
+              <li>各ステップで「情報の流れ」「権限」「保守負荷」をセットで検証。</li>
+              <li>導入校同士でナレッジを交換し、紙掲示からの移行率を指標化します。</li>
+            </ul>
+            <div class="hero-actions">
+              <a class="btn primary" href="#steps">ロードマップを見る</a>
+            </div>
+            <div class="hero-stats" role="list">
+              <div class="hero-stat" role="listitem">
+                <label>PoC学校</label>
+                <strong>3校</strong>
+                <span>中学2・高校1</span>
+              </div>
+              <div class="hero-stat" role="listitem">
+                <label>紙掲示削減</label>
+                <strong>-42%</strong>
+                <span>Step01検証2ヶ月平均</span>
+              </div>
+              <div class="hero-stat" role="listitem">
+                <label>教員満足度</label>
+                <strong>4.3/5</strong>
+                <span>運用しやすさアンケート</span>
+              </div>
+            </div>
+          </div>
+          <div class="hero-card-visual"><div class="mock">Step 1 / Step 2 / Step 3 の簡略カード</div></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 横スクロールのステップカード群 -->
+  <section id="steps" class="section">
+      <div class="container">
+        <div class="card big" style="overflow-x:auto; white-space:nowrap; padding:18px;">
+          <div style="display:inline-grid; grid-auto-flow:column; grid-auto-columns:minmax(260px, 1fr); gap:12px;">
+            <div class="card reveal" style="min-width:260px;"><h3>Step 01：校内実験版</h3><p>クラス単位で運用し、使い勝手を検証。</p></div>
+            <div class="card reveal" style="min-width:260px;"><h3>Step 02：教員ポータル連携</h3><p>時間割・成績処理などと緩やかに接続。</p></div>
+            <div class="card reveal" style="min-width:260px;"><h3>Step 03：複数校連携</h3><p>大会情報・合同イベントなどを共有。</p></div>
+            <div class="card reveal" style="min-width:260px;"><h3>Step 04：AIによる整理</h3><p>類似掲示の自動グループ化、期限優先。</p></div>
+          </div>
+        </div>
+        <p class="subtle" style="text-align:center; margin-top:10px;">左右にスワイプ／スクロールできます。</p>
+      </div>
+    </section>
+
+    <!-- 技術的チャレンジ -->
+    <section class="section">
+      <div class="container">
+        <h2>技術的チャレンジ（メモ）</h2>
+        <div class="card-grid three">
+          <div class="card reveal"><h3>認証・権限</h3><p>ロールと責務に応じた編集権限。</p></div>
+          <div class="card reveal"><h3>校内インフラ</h3><p>校内Wi‑Fi、既存システム連携。</p></div>
+          <div class="card reveal"><h3>運用</h3><p>バックアップと同期、変更履歴管理。</p></div>
+        </div>
+      </div>
+    </section>
+    <section class="section info-density" aria-label="中央寄せUIと拡張計画">
+      <div class="container">
+        <h2>中央寄せUIを軸にしたスケール戦略</h2>
+        <p>どの校舎でも“真ん中に立てば全体が読める”距離感を共通化し、導入先ごとの改修コストを抑えたまま機能拡張できるようにしました。</p>
+        <div class="info-columns">
+          <div class="info-card">
+            <h3>Step01：校内実験</h3>
+            <p>1フロアの配線長と光量を測定し、紙掲示との共存幅を50cm単位で記録。中央寄せ配置の導線図をフォーマット化。</p>
+          </div>
+          <div class="info-card">
+            <h3>Step02：教員ポータル連携</h3>
+            <p>教務システムとのAPI連携では、カテゴリ別に「教員>生徒>公開」の優先度を設計。中央列に表示される情報量を1モジュール=24pxで統一。</p>
+          </div>
+          <div class="info-card">
+            <h3>Step03：複数校ネットワーク</h3>
+            <p>イベント情報を共通フォーマットでやりとりし、学校固有の掲示は中央寄せ列のまま、外部カードを周辺に重ねる設計を計画中。</p>
+          </div>
+        </div>
+        <p style="margin-top:1.5rem;">AI整理フェーズでは中央カラムに優先カードをまとめ、サイドに候補カードを“待機”表示することで、立ち位置を変えずに意思決定できるUIを目指しています。</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer"><div class="container">© 2025 Tangible School Board</div></footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const bar = document.getElementById('pageProgressBar');
+      if (!bar) return;
+
+      const calcProgress = () => {
+        const doc = document.documentElement;
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const scrollable = doc.scrollHeight - doc.clientHeight;
+        const ratio = scrollable <= 0 ? 0 : scrollTop / scrollable;
+        bar.style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
+      };
+
+      let rafId = null;
+      const queueUpdate = () => {
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+          calcProgress();
+          rafId = null;
+        });
+      };
+
+      calcProgress();
+      window.addEventListener('scroll', queueUpdate, { passive: true });
+      window.addEventListener('resize', queueUpdate);
+    });
+  </script>
+  <script src="./common.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>作成時の苦労 | TANGIBLE SCHOOL BOARD</title>
+  <link rel="stylesheet" href="./common.css" />
+  <style>
+    :root {
+      --page-progress-bg: rgba(255, 255, 255, 0.16);
+      --page-progress-fill: #4f8dff;
+    }
+    .main-centered {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 4rem;
+    }
+    .page-progress {
+      position: fixed;
+      top: 0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(90vw, 960px);
+      height: 4px;
+      border-radius: 999px;
+      background: var(--page-progress-bg);
+      z-index: 999;
+      pointer-events: none;
+    }
+    .page-progress-bar {
+      width: 0%;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--page-progress-fill), #92b5ff);
+      transition: width 0.15s ease;
+    }
+    .hero-details {
+      list-style: none;
+      margin: 1rem 0 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.5rem 1rem;
+    }
+    .hero-details li {
+      position: relative;
+      padding-left: 1.3rem;
+      line-height: 1.6;
+    }
+    .hero-details li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--page-progress-fill);
+    }
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .hero-stat {
+      padding: 1.25rem;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(6px);
+    }
+    .hero-stat label {
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      opacity: 0.75;
+      display: block;
+    }
+    .hero-stat strong {
+      display: block;
+      font-size: 1.35rem;
+      margin: 0.4rem 0;
+    }
+    .hero-stat span {
+      font-size: 0.8rem;
+      opacity: 0.8;
+    }
+    .info-density {
+      background: linear-gradient(135deg, rgba(79, 141, 255, 0.08), rgba(255, 255, 255, 0));
+      border-radius: 24px;
+      padding: 2rem;
+      margin-top: 2rem;
+    }
+    .info-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+    .info-card {
+      padding: 1.5rem;
+      border-radius: 16px;
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      background: #fff;
+      box-shadow: 0 12px 28px rgba(20, 34, 76, 0.08);
+    }
+  </style>
+</head>
+<body class="page-making">
+  <div class="page-progress" aria-hidden="true">
+    <div class="page-progress-bar" id="pageProgressBar"></div>
+  </div>
+  <header class="header">
+    <nav class="nav">
+      <div class="brand"><span class="brand-dot"></span> TANGIBLE SCHOOL BOARD</div>
+      <div class="menu">
+        <a class="nav-link" href="./index.html">TOP</a>
+        <a class="nav-link" href="./features.html">機能紹介</a>
+        <a class="nav-link" href="./why.html">なぜ実装したのか</a>
+        <a class="nav-link" href="./tangible.html">タンジブルの意味</a>
+        <a class="nav-link" href="./roadmap.html">今後の発展</a>
+        <a class="nav-link" href="./making.html">作成時の苦労</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-centered">
+    <!-- ファーストビュー：共通カードフレーム（1カラム） -->
+    <section class="section section-hero">
+      <div class="hero-shell">
+        <article class="hero-card hero-card--single">
+          <div class="hero-card-main">
+            <p class="hero-eyebrow">MAKING</p>
+            <h1 class="hero-title">迷って作って、また迷って整える。</h1>
+            <p class="hero-lead">スライド1枚のアイデアから、動くUIに育つまで。うまくいったことも、遠回りしたことも、そのまま記録しました。</p>
+            <ul class="hero-details">
+              <li>授業アンケート120件から「通知の見落とし」を抽出し、要件に翻訳。</li>
+              <li>紙モック→Figma→実機の3段階で“中央寄せ”の距離感を検証。</li>
+              <li>運用中の先生3名と週次で振り返り、UIの定量メモを残しました。</li>
+            </ul>
+            <div class="hero-actions">
+              <a class="btn primary" href="#timeline">制作のタイムラインへ</a>
+            </div>
+            <div class="hero-stats" role="list">
+              <div class="hero-stat" role="listitem">
+                <label>紙→デジタル移行</label>
+                <strong>38枚</strong>
+                <span>3週間で貼り替え完了</span>
+              </div>
+              <div class="hero-stat" role="listitem">
+                <label>UI試作回数</label>
+                <strong>11版</strong>
+                <span>カラーリングと密度の調整</span>
+              </div>
+              <div class="hero-stat" role="listitem">
+                <label>フィールドワーク</label>
+                <strong>26h</strong>
+                <span>登校・放課後の観察記録</span>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 縦タイムライン -->
+  <section id="timeline" class="section">
+      <div class="container">
+        <div class="timeline">
+          <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-content"><h4>Ver.0（アイデア）</h4><p>授業スライドから着想、要件の言語化。</p></div></div>
+          <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-content"><h4>Ver.1（紙プロト）</h4><p>画面遷移と情報の置き場所を試作。</p></div></div>
+          <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-content"><h4>Ver.2（ダークUI）</h4><p>視認性・疲労感の点で白基調へ転換。</p></div></div>
+          <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-content"><h4>Ver.3（ホワイト）</h4><p>カレンダー統合、プレビューの配置調整。</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ギャラリー（プレースホルダ） -->
+    <section class="section">
+      <div class="container">
+        <h2>スクショギャラリー（抜粋）</h2>
+        <div class="card-grid three">
+          <div class="card reveal"><h3>カテゴリ切替</h3><p>色は控えめ、記号的に。</p></div>
+          <div class="card reveal"><h3>カレンダー連動</h3><p>対象日が光る導線。</p></div>
+          <div class="card reveal"><h3>投稿シート</h3><p>すぐ書けて、すぐ反映。</p></div>
+        </div>
+        <p class="subtle" style="margin-top:10px;">※ クリックで拡大予定（後日）。</p>
+      </div>
+    </section>
+    <!-- 8. どこに置く？ ミニ質問 -->
+    <section id="placement" class="section placement">
+      <div class="container">
+        <header class="section-header">
+          <h2>あなたの学校なら、どこに置きますか？</h2>
+          <p>設置場所によって、助かる人も変わります。</p>
+        </header>
+
+        <div class="placement-inner">
+          <div class="placement-choices" role="radiogroup">
+            <button class="placement-option" data-place="entrance">昇降口</button>
+            <button class="placement-option" data-place="stair">階段ホール</button>
+            <button class="placement-option" data-place="office">職員室前</button>
+            <button class="placement-option" data-place="other">その他</button>
+          </div>
+
+          <div class="placement-visual">
+            <img src="assets/place-entrance.png" alt="" data-placement-image>
+            <p class="placement-caption" data-placement-caption>昇降口に置けば、登校と下校のたびに自然と目に入ります。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="info-density">
+      <h3>中央寄せUIに切り替えた理由</h3>
+      <p>掲示板と廊下のセンターラインを揃えることで、立ち止まったまま身体をひねらず全体を読める距離を作りました。紙掲示と同じ高さに要点を置くことで“探さなくていい”体験に寄せています。</p>
+      <div class="info-columns">
+        <div class="info-card">
+          <h4>導線の実測</h4>
+          <p>ビデオ計測で生徒の歩幅平均62cmを基準にし、片側通行時も2ステップ以内で画面中央に入れる配置を決定。</p>
+        </div>
+        <div class="info-card">
+          <h4>情報レイヤー</h4>
+          <p>カード→サマリー→カレンダーの3層を縦方向に固定し、文字量を40〜60字に統一。目線の上下幅を32cmに制御。</p>
+        </div>
+        <div class="info-card">
+          <h4>心理的な余裕</h4>
+          <p>通知を“取りに行く”姿勢を保つため、あえて中央に寄せ、踏み込んだ瞬間に光量と情報が増える演出を入れています。</p>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer class="footer"><div class="container">© 2025 Tangible School Board</div></footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const bar = document.getElementById('pageProgressBar');
+      if (!bar) return;
+
+      const calcProgress = () => {
+        const doc = document.documentElement;
+        const scrollTop = doc.scrollTop || document.body.scrollTop;
+        const scrollable = doc.scrollHeight - doc.clientHeight;
+        const ratio = scrollable <= 0 ? 0 : scrollTop / scrollable;
+        bar.style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
+      };
+
+      let rafId = null;
+      const queueUpdate = () => {
+        if (rafId) return;
+        rafId = requestAnimationFrame(() => {
+          calcProgress();
+          rafId = null;
+        });
+      };
+
+      calcProgress();
+      window.addEventListener('scroll', queueUpdate, { passive: true });
+      window.addEventListener('resize', queueUpdate);
+    });
+  </script>
+  <script src="./common.js" defer></script>
+</body>
+</html>

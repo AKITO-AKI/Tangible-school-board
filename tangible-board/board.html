@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>誰でもその場で書ける、見られる掲示板（プロトタイプ）</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app">
+    <header class="top-bar">
+      <div class="branding">
+        <span class="brand-dot"></span>
+        <span class="brand-title">TANGIBLE SCHOOL BOARD</span>
+      </div>
+      <div class="top-actions">
+        <!-- 今月＆今日のカレンダー位置にジャンプ -->
+        <button id="calendarBtn" class="icon-btn">カレンダー</button>
+        <button id="settingsBtn" class="icon-btn">設定</button>
+      </div>
+    </header>
+
+    <!-- 回転ずしメニューバー -->
+    <div class="ticker" id="ticker">
+      <div class="ticker-track" id="tickerTrack"></div>
+    </div>
+
+    <!-- メイン：左6 = ボード, 右4 = カレンダー -->
+    <main class="main-layout">
+      <!-- ボード -->
+      <section class="board" id="boardPanel">
+        <button id="prevBtn" class="nav-btn" aria-label="前のお知らせ">‹</button>
+
+        <div class="card-track" id="cardTrack">
+          <!-- メインカード -->
+          <article class="post-card" id="postCard">
+            <div class="post-header">
+              <div id="postCategoryPill" class="pill">全体</div>
+              <div id="postTarget" class="pill pill-secondary">全校生徒</div>
+            </div>
+
+            <h1 id="postTitle" class="post-title">サンプルのお知らせ</h1>
+
+            <div id="postMeta" class="post-meta"></div>
+
+            <div class="post-body-wrapper">
+              <p id="postBody" class="post-body">
+                ようこそ！これはプロトタイプ用のサンプルです。
+                左右フリックでお知らせをめくれます。
+              </p>
+              <p id="emptyMessage" class="empty-message" style="display:none;">
+                このカテゴリにはまだお知らせがありません。<br>
+                右下の「掲示する」や下フリックから追加できます。
+              </p>
+            </div>
+
+            <div class="post-footer">
+              <span id="postIndexLabel" class="post-index">1 / 1</span>
+              <span id="postTimeLabel" class="post-time"></span>
+            </div>
+          </article>
+
+          <!-- 前のお知らせプレビュー -->
+          <article class="preview-card preview-prev" id="previewPrevCard">
+            <div class="preview-label">前のお知らせ</div>
+            <div class="preview-title" id="previewPrevTitle">—</div>
+          </article>
+
+          <!-- 次のお知らせプレビュー -->
+          <article class="preview-card preview-next" id="previewNextCard">
+            <div class="preview-label">次のお知らせ</div>
+            <div class="preview-title" id="previewNextTitle">—</div>
+          </article>
+        </div>
+
+        <button id="nextBtn" class="nav-btn" aria-label="次のお知らせ">›</button>
+      </section>
+
+      <!-- カレンダー 右4 -->
+      <aside class="calendar-panel" id="calendarPanel">
+        <div class="calendar-header">
+          <div class="calendar-title-row">
+            <span class="calendar-label">月間カレンダー</span>
+          </div>
+          <div class="calendar-month-row">
+            <button id="calendarPrevMonthBtn" class="icon-btn small">‹</button>
+            <div id="calendarMonthLabel" class="calendar-month-label">2025年4月</div>
+            <button id="calendarNextMonthBtn" class="icon-btn small">›</button>
+          </div>
+        </div>
+
+        <div class="calendar-grid" id="calendarGrid">
+          <!-- JSで埋める -->
+        </div>
+
+        <div class="calendar-events-area">
+          <div class="calendar-events-title">選択した日の掲示</div>
+          <div class="calendar-events-list" id="calendarEventsList">
+            <!-- JS -->
+          </div>
+        </div>
+
+        <button id="calendarAddPostBtn" class="calendar-add-btn">
+          選択した日に掲示を作る
+        </button>
+      </aside>
+    </main>
+
+    <!-- カテゴリ選択バー -->
+    <nav class="category-bar">
+      <button class="category-chip active" data-category="all">全体</button>
+      <button class="category-chip" data-category="club">部活動</button>
+      <button class="category-chip" data-category="committee">委員会</button>
+      <button class="category-chip" data-category="grade">各学年</button>
+    </nav>
+
+    <!-- 書くボタン -->
+    <button id="writeBtn" class="floating-btn">掲示する</button>
+  </div>
+
+  <!-- 5. ゴーストハンドのスワイプチュートリアル（初回のみ表示） -->
+  <div class="swipe-hint" data-swipe-hint hidden>
+    <div class="swipe-hand"></div>
+    <p>カードは左右にスワイプしてめくることができます。</p>
+    <button type="button" class="swipe-hint-close">わかった</button>
+  </div>
+
+  <!-- 書くシート -->
+  <div id="editorSheet" class="sheet">
+    <div class="sheet-inner">
+      <div class="sheet-header">
+        <h2>新しく掲示する</h2>
+        <button id="editorCloseBtn" class="icon-btn small">閉じる</button>
+      </div>
+      <form id="postForm">
+        <label>
+          タイトル
+          <input type="text" id="inputTitle" placeholder="例：テニス部 体験入部のお知らせ" required>
+        </label>
+
+        <label>
+          カテゴリ
+          <select id="inputCategory" required>
+            <option value="club">部活動</option>
+            <option value="committee">委員会</option>
+            <option value="grade">各学年</option>
+            <option value="all">全体</option>
+          </select>
+        </label>
+
+        <label>
+          対象（部活名・委員会名・学年など）
+          <input type="text" id="inputTarget" placeholder="例：テニス部 / 生徒会 / 1年生など">
+        </label>
+
+        <label>
+          本文
+          <textarea id="inputBody" rows="4" placeholder="ここにお知らせの内容を書きます" required></textarea>
+        </label>
+
+        <label>
+          表示期限（任意・カレンダーに表示）
+          <input type="date" id="inputUntil">
+        </label>
+
+        <button type="submit" class="primary-btn">掲示する</button>
+      </form>
+      <p class="hint">※ このプロトタイプでは投稿はブラウザ内だけに保存されます。</p>
+    </div>
+  </div>
+
+  <!-- 設定シート -->
+  <div id="settingsSheet" class="sheet">
+    <div class="sheet-inner">
+      <div class="sheet-header">
+        <h2>表示設定</h2>
+        <button id="settingsCloseBtn" class="icon-btn small">閉じる</button>
+      </div>
+
+      <div class="settings-group">
+        <label class="switch-row">
+          <span>スライドショー（同じカテゴリ内で自動送り）</span>
+          <input type="checkbox" id="autoPlaySlides">
+        </label>
+
+        <label>
+          切り替え間隔
+          <select id="slideIntervalSelect">
+            <option value="5000">5秒</option>
+            <option value="8000">8秒</option>
+            <option value="12000">12秒</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="settings-group">
+        <label class="switch-row">
+          <span>カテゴリも自動で切り替え</span>
+          <input type="checkbox" id="autoRotateCategories">
+        </label>
+
+        <label>
+          カテゴリ切り替え間隔
+          <select id="categoryIntervalSelect">
+            <option value="20000">20秒</option>
+            <option value="30000">30秒</option>
+            <option value="45000">45秒</option>
+          </select>
+        </label>
+      </div>
+
+      <p class="hint">※ 設定もブラウザ内に保存されます。</p>
+    </div>
+  </div>
+
+  <script src="script.js" defer></script>
+  <script defer>
+    (function(){
+      const HINT_KEY = 'tsb_swipe_hint_done';
+      const layer = document.querySelector('[data-swipe-hint]');
+      const closeBtn = layer?.querySelector('.swipe-hint-close');
+      function shouldShow(){ return !localStorage.getItem(HINT_KEY); }
+      if (layer && shouldShow()){
+        layer.hidden = false;
+        closeBtn?.addEventListener('click', () => { layer.hidden = true; localStorage.setItem(HINT_KEY, '1'); });
+        setTimeout(() => { if (typeof goToNextCard === 'function') { try { goToNextCard(); } catch(_){} } }, 1000);
+      }
+    })();
+  </script>
+</body>
+</html>
