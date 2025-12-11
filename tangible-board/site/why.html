@@ -7,13 +7,13 @@
   <link rel="stylesheet" href="./common.css" />
   <style>
     :root {
-      --page-progress-bg: rgba(255, 255, 255, 0.16);
-      --page-progress-fill: #4f8dff;
+      --page-progress-bg: rgba(255, 255, 255, 0.12);
+      --page-progress-fill: var(--accent-page);
     }
     .main-centered {
-      max-width: 1100px;
+      max-width: 960px;
       margin: 0 auto;
-      padding: 0 2rem 4rem;
+      padding: 0 2rem 5rem;
     }
     .page-progress {
       position: fixed;
@@ -31,243 +31,179 @@
       width: 0%;
       height: 100%;
       border-radius: inherit;
-      background: linear-gradient(90deg, var(--page-progress-fill), #92b5ff);
-      transition: width 0.15s ease;
+      background: linear-gradient(90deg, var(--page-progress-fill), rgba(255, 255, 255, 0.65));
+      transition: width 0.2s ease;
     }
-    .hero-details {
-      list-style: none;
-      margin: 1rem 0 0;
-      padding: 0;
+    .article {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 0.6rem 1rem;
+      gap: 3rem;
+      padding: 4.5rem 0 0;
     }
-    .hero-details li {
-      position: relative;
-      padding-left: 1.3rem;
-      line-height: 1.6;
-    }
-    .hero-details li::before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: var(--page-progress-fill);
-    }
-    .hero-stats {
+    .article-header {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
-      margin-top: 1.5rem;
     }
-    .hero-stat {
-      padding: 1.2rem;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(6px);
+    .article-eyebrow {
+      font-size: 0.85rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(71, 56, 38, 0.55);
     }
-    .hero-stat label {
-      font-size: 0.78rem;
-      letter-spacing: 0.04em;
-      opacity: 0.75;
-      display: block;
+    .article-header h1 {
+      margin: 0;
+      font-size: clamp(2rem, 3vw, 2.6rem);
     }
-    .hero-stat strong {
-      display: block;
-      font-size: 1.35rem;
-      margin: 0.35rem 0;
+    .article-header p {
+      margin: 0;
+      line-height: 1.8;
+      color: rgba(71, 56, 38, 0.82);
     }
-    .hero-stat span {
-      font-size: 0.8rem;
-      opacity: 0.8;
-    }
-    .info-density {
-      background: linear-gradient(135deg, rgba(79, 141, 255, 0.08), rgba(255, 255, 255, 0));
-      border-radius: 24px;
-      padding: 2rem;
-      margin-top: 2rem;
-    }
-    .info-columns {
+    .article-section {
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(120, 53, 15, 0.08);
+      border-radius: 22px;
+      padding: clamp(1.8rem, 3vw, 2.6rem);
+      box-shadow: 0 18px 36px rgba(120, 53, 15, 0.12);
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.25rem;
-      margin-top: 1.5rem;
+      gap: 1.6rem;
     }
-    .info-card {
-      padding: 1.5rem;
-      border-radius: 16px;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      background: #fff;
-      box-shadow: 0 12px 30px rgba(20, 34, 76, 0.08);
+    .article-section h2 {
+      margin: 0;
+      font-size: clamp(1.45rem, 2.4vw, 1.85rem);
+      color: var(--accent-page);
+    }
+    .article-section p {
+      margin: 0;
+      line-height: 1.8;
+      color: rgba(71, 56, 38, 0.82);
+    }
+    .article-section ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      display: grid;
+      gap: 0.5rem;
+      color: rgba(71, 56, 38, 0.82);
+    }
+    .article-subsection {
+      display: grid;
+      gap: 0.75rem;
+    }
+    .article-subsection h3 {
+      margin: 0;
+      font-size: 1.15rem;
+      color: rgba(71, 56, 38, 0.9);
+    }
+    @media (max-width: 720px) {
+      .main-centered { padding: 0 1.5rem 4rem; }
+      .article-section { border-radius: 18px; }
     }
   </style>
 </head>
 <body class="page-why">
+  <div class="page-loader" id="page-loader" role="status" aria-live="polite">
+    <div class="loader-shell">
+      <div class="loader-orbit" aria-hidden="true">
+        <div class="loader-pulse"></div>
+        <div class="loader-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <div class="loader-panel">
+        <p class="loader-panel-label">Now Loading</p>
+        <p class="loader-panel-title">Tangible School Board</p>
+        <p class="loader-panel-hint-label">ヒント</p>
+        <p class="loader-panel-hint" data-loader-hint>今日の校内連絡を整理しています…</p>
+      </div>
+    </div>
+  </div>
   <div class="page-progress" aria-hidden="true">
     <div class="page-progress-bar" id="pageProgressBar"></div>
   </div>
   <header class="header">
-    <nav class="nav">
-      <div class="brand"><span class="brand-dot"></span> TANGIBLE SCHOOL BOARD</div>
-      <div class="menu">
-        <a class="nav-link" href="./index.html">TOP</a>
-        <a class="nav-link" href="./features.html">機能紹介</a>
-        <a class="nav-link" href="./why.html">なぜ実装したのか</a>
-        <a class="nav-link" href="./tangible.html">タンジブルの意味</a>
-        <a class="nav-link" href="./roadmap.html">今後の発展</a>
-        <a class="nav-link" href="./making.html">作成時の苦労</a>
+    <nav class="nav" aria-label="グローバルナビゲーション">
+      <div class="brand"><span class="brand-dot" aria-hidden="true"></span> TANGIBLE SCHOOL BOARD</div>
+      <div class="menu" role="navigation" aria-label="ページナビ">
+        <a class="nav-link" href="./index.html" data-target="top">TOP</a>
+        <a class="nav-link" href="./features.html" data-target="features">機能紹介</a>
+        <a class="nav-link" href="./why.html" data-target="why">なぜ実装したのか</a>
+        <a class="nav-link" href="./tangible.html" data-target="tangible">タンジブルの意味</a>
+        <a class="nav-link" href="./roadmap.html" data-target="future">今後の発展</a>
+        <a class="nav-link" href="./making.html" data-target="story">作成時の苦労</a>
+        <a class="btn small demo-btn" href="../board.html" target="_blank" rel="noopener">デモをひらく</a>
       </div>
     </nav>
   </header>
 
   <main class="main-centered">
-    <!-- ファーストビュー：共通カードフレーム（数字を右に） -->
-    <section class="section section-hero">
-      <div class="hero-shell">
-        <article class="hero-card">
-          <div class="hero-card-main">
-            <p class="hero-eyebrow">WHY</p>
-            <h1 class="hero-title">なぜ、このボードが必要なのか。</h1>
-            <p class="hero-lead">「プリントが見つからない」「通知が流れて見逃した」。そんな“連絡の抜け”を、私たちは何度も経験してきました。</p>
-            <ul class="hero-details">
-              <li>プリント/アプリ/口頭の連絡がバラバラで、どこを見ればいいか迷う時間が生まれている。</li>
-              <li>通知は流れて終わり。身体を動かして確認する“儀式”がなくなり、重要度の感覚が失われた。</li>
-              <li>学校の中心に共通の“受け取り場所”を作ることで、誰が見ても同じ情報量に触れられる。</li>
-            </ul>
-            <div class="hero-actions">
-              <a class="btn primary" href="#data">データから見る課題</a>
-            </div>
-            <div class="hero-stats" role="list">
-              <div class="hero-stat" role="listitem">
-                <label>プリント紛失</label>
-                <strong>72%</strong>
-                <span>保護者アンケート（n=412）</span>
-              </div>
-              <div class="hero-stat" role="listitem">
-                <label>通知未読</label>
-                <strong>41%</strong>
-                <span>朝7時〜9時の未確認率</span>
-              </div>
-              <div class="hero-stat" role="listitem">
-                <label>紙掲示依存</label>
-                <strong>35枚/週</strong>
-                <span>1校あたり掲示更新枚数</span>
-              </div>
-            </div>
-          </div>
-          <div class="hero-card-visual">
-            <div class="bignum"><div class="value">70%+</div><div class="desc">保護者がプリント紛失を経験</div></div>
-          </div>
-        </article>
-      </div>
-    </section>
-    <section id="data" class="section data-zone">
-      <div class="container">
-        <h2>どうして、このボードが必要だったのか</h2>
-        <div class="card big">
-          <p>ほぼ全員がスマホを持ち、家庭はプリント管理に悩む。それでも「知らなかった」はなくならない。</p>
-        </div>
-      <h3>1. 大きな数字から見える現実</h3>
-      <div class="data-grid">
-        <div class="bignum"><div class="value countup">99%</div><div class="desc">高校生のインターネット利用率 <a href="#refs" class="sup" aria-label="参考資料へ">¹</a></div></div>
-        <div class="bignum"><div class="value countup">99.3%</div><div class="desc">高校生の自分専用スマホ保有率 <a href="#refs" class="sup" aria-label="参考資料へ">²</a></div></div>
-        <div class="bignum"><div class="value countup">70%+</div><div class="desc">保護者のプリント紛失経験 <a href="#refs" class="sup" aria-label="参考資料へ">³</a></div></div>
-      </div>
-      <div class="gaps">
-        <div class="gap-card"><h3>① チャネルのギャップ</h3><p>プリント、口頭、SNS…どこを見れば良いか直感的でない。</p></div>
-        <div class="gap-card"><h3>② 時間のギャップ</h3><p>通知は便利だが、最も見てほしい時ほど埋もれる。</p></div>
-        <div class="gap-card"><h3>③ 場所のギャップ</h3><p>“ここを見れば分かる入口”が学校に明確でない。</p></div>
-      </div>
+    <article class="article">
+      <header class="article-header">
+        <p class="article-eyebrow">WHY</p>
+        <h1>なぜ、このボードが必要なのか</h1>
+        <p>「プリントが見つからない」「通知が流れて見逃した」。そんな“連絡の抜け”を何度も経験してきた私たちが、学校という環境に合わせた情報の受け取り方を考え直しました。</p>
+      </header>
 
-      <!-- チャート（プレースホルダ） -->
-      <div class="chart-row">
-        <div class="chart">円グラフ：紛失あり/なし</div>
-        <div class="chart">棒グラフ：スマホ利用 vs 紙配布依存</div>
-        <div class="chart">2軸図：一覧性と即時性</div>
-      </div>
-
-      <!-- 参考資料カード -->
-      <div id="refs" class="card big refs" aria-labelledby="refs-title" style="margin-top:18px;">
-        <h3 id="refs-title">参考資料</h3>
-        <ul class="bullet">
-          <li><strong>令和5年度 青少年のインターネット利用環境実態調査</strong>（2023 / こども家庭庁） — 閲覧URL: <span class="subtle">公式サイト</span></li>
-          <li><strong>子どもが受け取るプリントの管理に関する実態調査</strong>（2023 / アドビ） — 閲覧URL: <span class="subtle">公式ニュース</span></li>
-          <li><strong>高校生のインターネット利用に関する補足調査</strong>（2023 / その他） — 閲覧URL: <span class="subtle">参考サイト</span></li>
+      <section class="article-section">
+        <h2>紙の掲示板とプリントに頼りきった学校の現状</h2>
+        <p>学校では、連絡手段が昇降口の掲示板、学年掲示板、教室の黒板、配布プリント、口頭連絡と散らばっています。同じ学校にいるはずなのに、「知っている人」と「知らない人」に分かれてしまう瞬間が何度もありました。</p>
+        <ul>
+          <li>休み時間に昇降口まで行かないと気づけない掲示。</li>
+          <li>カバンの中で埋もれて読まれない配布プリント。</li>
+          <li>先生は連絡しているのに、クラスの半分が聞き逃してしまう口頭連絡。</li>
         </ul>
-      </div>
-    </section>
+        <p>一方でスマートフォンの利用は制限され、SNSやチャットアプリを公式な連絡手段にすることも難しいままです。「デジタルにすれば解決」ではなく、学校に合わせた形で情報の流れを整理する必要を感じました。</p>
+      </section>
 
-    <!-- 7. 情報密度ヒートマップ＋スクラブ -->
-    <section id="heatmap" class="section heatmap">
-      <div class="container">
-        <header class="section-header">
-          <h2>1か月の「情報の混み具合」を見る。</h2>
-          <p>日によってどれくらい掲示が集中するのか…</p>
-        </header>
+      <section class="article-section">
+        <h2>情報が「流れてしまう」問題と、場所に結びついたメディア</h2>
+        <p>SNSやチャットは即時性が強みですが、時間が経つとどんどん情報が流れてしまいます。学校で求められているのは、次のような性質を持つ情報のあり方です。</p>
+        <ul>
+          <li>いつ見に行っても同じ場所に必要な情報があること。</li>
+          <li>普段の動線の中で自然と目に入ること。</li>
+          <li>その場にいる全員が同じものを見ているという前提を持てること。</li>
+        </ul>
+        <p>紙の掲示板はその役割を長く担ってきましたが、貼り替えの手間やスペースの限界、情報の鮮度という面で限界が見え始めています。</p>
+      </section>
 
-        <div class="heatmap-inner">
-          <div class="heatmap-bar" data-heatmap-bar></div>
+      <section class="article-section">
+        <h2>Tangible School Board が目指す「場所としてのデジタル」</h2>
+        <p>Tangible School Board は、「場所に結びついた情報」の良さを残しつつ、デジタルならではの更新のしやすさを取り入れようとした試みです。</p>
+        <ul>
+          <li>物理的なボードと同じように、廊下や昇降口など毎日通る場所に置く。</li>
+          <li>スマホの通知のように個人へ届くのではなく、その場にいる人が一緒に見上げる。</li>
+          <li>内容はデジタルで柔軟に更新でき、プリントを刷り直すよりも速く差し替えられる。</li>
+        </ul>
+        <p>「どんなに忙しくても、ここさえ見れば今日の学校が分かる」という“最後の砦”を一箇所に集約するイメージです。</p>
+      </section>
 
-          <div class="heatmap-preview">
-            <div class="heatmap-date-label" data-heatmap-date>6月1日</div>
-            <div class="heatmap-count" data-heatmap-count>掲示 2件</div>
-            <div class="heatmap-mini-mock">
-              <img data-heatmap-image src="assets/day-1.png" alt="一週間分の掲示密度の例" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="section info-density" aria-label="中央寄せUIでの課題解決">
-      <div class="container">
-        <h2>中央寄せUIで“ここに来れば分かる”を作り直す</h2>
-        <p>廊下のセンターラインに合わせてUIを寄せ、立ち止まる距離と情報密度を学校ごとに共通化しました。通知ではなく身体を動かす行為を通じて、重要度の高い情報を“受け取りに行く”感覚を復活させています。</p>
-        <div class="info-columns">
-          <div class="info-card">
-            <h3>導線の整理</h3>
-            <p>紙掲示を左右に残し、中央40cmだけをデジタルに。朝のラッシュでも2ステップで正面に立てる幅を確保しました。</p>
-          </div>
-          <div class="info-card">
-            <h3>情報レイヤー</h3>
-            <p>カテゴリピル→本文→期日の3段構成で縦方向に積み、視線移動を一定化。閲覧時間は平均19秒→28秒へ。</p>
-          </div>
-          <div class="info-card">
-            <h3>心理的な準備</h3>
-            <p>中央寄せにより“ここで情報を受け取る”という儀式が生まれ、保護者面談での「知らなかった」を30%削減しました。</p>
-          </div>
-        </div>
-      </div>
-    </section>
+      <section class="article-section">
+        <h2>認知負荷と「一目で分かる」ための設計</h2>
+        <p>学校生活はテスト、行事、部活動、委員会の予定などタスクが多く、頭の中で整理するだけでも大変です。Tangible School Board では、認知負荷を下げるために次のような工夫をしています。</p>
+        <ul>
+          <li>情報の単位をカードに小分けし、一度に大量の文章を読ませない。</li>
+          <li>カラーとラベルで「自分に関係あるかどうか」をすぐ判断できる。</li>
+          <li>カレンダーと連動させ、「今日は何がある日か？」を視覚的に掴める。</li>
+          <li>遠くから見ても「重要そうなカード」が目に飛び込んでくるデザインにする。</li>
+        </ul>
+        <p>情報を減らすのではなく、頭の中で整理する手間を減らすこと。それがこのボードを作りながら一番意識してきたポイントです。</p>
+      </section>
+
+      <section class="article-section">
+        <h2>「情報格差」を少しでも減らすために</h2>
+        <p>プリントをなくして怒られたり、集合時間を勘違いして遅刻したりした経験は、「サボっていたから」だけではありません。情報がどこにあるのか分かりにくく、一度見逃すと取り戻せない形で配られていたことも原因です。</p>
+        <p>Tangible School Board は、そうした「ちょっとしたミス」を減らすための仕組みでもあります。</p>
+        <ul>
+          <li>クラスや部活ごとの情報を一枚のボードに見える化する。</li>
+          <li>毎日の登校という習慣にひも付け、「見ること」をルーティンにする。</li>
+        </ul>
+        <p>これらを通じて、「情報がちゃんと届く学校」に一歩でも近づければと考えています。</p>
+      </section>
+    </article>
   </main>
 
   <footer class="footer"><div class="container">© 2025 Tangible School Board</div></footer>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const bar = document.getElementById('pageProgressBar');
-      if (!bar) return;
-
-      const calcProgress = () => {
-        const doc = document.documentElement;
-        const scrollTop = doc.scrollTop || document.body.scrollTop;
-        const scrollable = doc.scrollHeight - doc.clientHeight;
-        const ratio = scrollable <= 0 ? 0 : scrollTop / scrollable;
-        bar.style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
-      };
-
-      let rafId = null;
-      const queueUpdate = () => {
-        if (rafId) return;
-        rafId = requestAnimationFrame(() => {
-          calcProgress();
-          rafId = null;
-        });
-      };
-
-      calcProgress();
-      window.addEventListener('scroll', queueUpdate, { passive: true });
-      window.addEventListener('resize', queueUpdate);
-    });
-  </script>
   <script src="./common.js" defer></script>
 </body>
 </html>

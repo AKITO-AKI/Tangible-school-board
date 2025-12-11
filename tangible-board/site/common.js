@@ -66,22 +66,75 @@
     document.querySelectorAll('.stat .num, .bignum .value').forEach(el => countUp(el));
   }
 
-  // ページ進行度インジケーター（縦バー用）
-  // スクロール量を CSS 変数 --scroll-progress に流すだけにする
+  // ページ進行度インジケーター: スクロール比率をCSS変数と背景グラデーションへ共有
   function setupProgress(){
     const root = document.documentElement;
+    const bar = document.getElementById('pageProgressBar');
 
-    function onScroll(){
+    const clamp01 = (value) => Math.min(1, Math.max(0, value));
+    const parseHex = (hex) => {
+      const value = (hex || '').replace('#', '').trim();
+      if (!value) return [79, 141, 255];
+      const normalized = value.length === 3
+        ? value.split('').map((ch) => ch + ch).join('')
+        : value.padStart(6, '0');
+      const bigint = Number.parseInt(normalized, 16);
+      if (Number.isNaN(bigint)) return [79, 141, 255];
+      return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
+    };
+    const mixWithWhite = (hex, weight) => {
+      const [r, g, b] = parseHex(hex);
+      const w = clamp01(weight);
+      const mix = (channel) => Math.round((1 - w) * 255 + w * channel);
+      return `rgb(${mix(r)}, ${mix(g)}, ${mix(b)})`;
+    };
+    const readAccent = () => {
+      const accent = getComputedStyle(document.body).getPropertyValue('--accent-page').trim();
+      return accent || '#4f8dff';
+    };
+    const updateGradient = (ratio) => {
+      const accent = readAccent();
+      const topWeight = clamp01(0.6 - 0.3 * ratio);
+      const midWeight = clamp01(0.4 - 0.18 * ratio);
+      const bottomWeight = clamp01(0.1 + 0.24 * ratio);
+      root.style.setProperty('--bg-gradient-top', mixWithWhite(accent, topWeight));
+      root.style.setProperty('--bg-gradient-mid', mixWithWhite(accent, midWeight));
+      root.style.setProperty('--bg-gradient-bottom', mixWithWhite(accent, bottomWeight));
+    };
+
+    const update = () => {
       const doc = document.documentElement;
       const total = doc.scrollHeight - doc.clientHeight;
       const y = Math.max(0, Math.min(total, window.scrollY || window.pageYOffset || 0));
-      const p = total > 0 ? (y / total) : 0; // 0〜1
-      root.style.setProperty('--scroll-progress', p.toString());
-    }
+      const progress = total > 0 ? (y / total) : 0;
+      const clamped = clamp01(progress);
+      root.style.setProperty('--scroll-progress', progress.toString());
+      root.style.setProperty('--page-progress', clamped.toFixed(4));
+      if (bar) {
+        bar.style.width = `${(clamped * 100).toFixed(2)}%`;
+      }
+      updateGradient(clamped);
+    };
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    onScroll();
+    let rafId = null;
+    const queueUpdate = () => {
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = null;
+        update();
+      });
+    };
+
+    window.addEventListener('scroll', queueUpdate, { passive: true });
+    window.addEventListener('resize', queueUpdate);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) queueUpdate();
+    });
+    if (document.body) {
+      const observer = new MutationObserver(queueUpdate);
+      observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    }
+    update();
   }
   setupProgress();
   // 1. ロール切り替えトグル
@@ -240,5 +293,72 @@
     buttons.forEach(b => b.addEventListener('click', () => setPlace(b.dataset.place)));
     const stored = localStorage.getItem('tsb_placement') || 'entrance';
     setPlace(stored);
+  })();
+
+  // 9. ページローダー制御とヒント
+  (function pageLoader(){
+    const loader = document.getElementById('page-loader');
+    if (!loader) return;
+    const hintEl = loader.querySelector('[data-loader-hint]');
+    const LOADER_HINTS = [
+      'ボード右上の「今日のタスク」は、担当者別に色を変えられます。',
+      '行事テンプレートはドラッグ＆ドロップで週をまたいで調整 OK。',
+      '放送室からの連絡は自動でボードにミラーされます。',
+      '朝のホームルーム前に一括更新。夜間はサイレントモードで表示のみ。',
+      '保護者アプリと連携すると、欠席連絡がリアルタイムに反映されます。',
+      '体育祭モードでは天気と熱中症指数もボードに常時表示されます。',
+      '廊下の照度に応じて輝度が自動調整されるので、見づらさゼロ。',
+      'カードに添付した資料は 7 日後に自動アーカイブされます。',
+      '担当者ごとにフィルター表示できる「ロールビュー」を活用しよう。',
+      '通知を一時停止したいときは、ボード右下のベルアイコンから。'
+    ];
+    const setRandomHint = () => {
+      if (!hintEl || !LOADER_HINTS.length) return;
+      const next = LOADER_HINTS[Math.floor(Math.random() * LOADER_HINTS.length)];
+      hintEl.textContent = next;
+    };
+    const hideLoader = () => {
+      document.documentElement.classList.add('is-loaded');
+      loader.setAttribute('aria-hidden', 'true');
+    };
+    const showLoader = () => {
+      document.documentElement.classList.remove('is-loaded');
+      loader.removeAttribute('aria-hidden');
+      setRandomHint();
+    };
+
+    window.addEventListener('load', () => {
+      setRandomHint();
+      const delay = prefersReduce ? 320 : 1200;
+      setTimeout(hideLoader, delay);
+    });
+
+    const shouldIntercept = (link) => {
+      if (link.target && link.target !== '_self') return false;
+      if (link.hasAttribute('download')) return false;
+      if (link.dataset.skipLoader === 'true') return false;
+      const href = link.getAttribute('href');
+      if (!href || href.startsWith('#')) return false;
+      let url;
+      try {
+        url = new URL(href, window.location.href);
+      } catch (err) {
+        return false;
+      }
+      if (url.origin !== window.location.origin) return false;
+      if (url.pathname === window.location.pathname && url.hash) return false;
+      return true;
+    };
+
+    document.addEventListener('click', (event) => {
+      const link = event.target instanceof Element ? event.target.closest('a') : null;
+      if (!link) return;
+      if (!shouldIntercept(link)) return;
+      event.preventDefault();
+      showLoader();
+      const href = link.href;
+      const delay = prefersReduce ? 240 : 700;
+      setTimeout(() => { window.location.assign(href); }, delay);
+    });
   })();
 })();

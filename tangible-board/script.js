@@ -19,11 +19,10 @@
   const boardPanel = document.getElementById("boardPanel");
   const prevBtn = document.getElementById("prevBtn");
   const nextBtn = document.getElementById("nextBtn");
-
-  const previewPrevCard = document.getElementById("previewPrevCard");
-  const previewNextCard = document.getElementById("previewNextCard");
-  const previewPrevTitle = document.getElementById("previewPrevTitle");
-  const previewNextTitle = document.getElementById("previewNextTitle");
+  const boardDotsEl = document.getElementById("boardDots");
+  const nextPeekBtn = document.getElementById("nextPeekBtn");
+  const nextPeekTitleEl = document.getElementById("nextPeekTitle");
+  const nextPeekMetaEl = document.getElementById("nextPeekMeta");
 
   const categoryChips = Array.from(
     document.querySelectorAll(".category-chip")
@@ -50,6 +49,24 @@
   const calendarNextMonthBtn = document.getElementById(
     "calendarNextMonthBtn"
   );
+
+  const metricTotalPosts = document.getElementById("metricTotalPosts");
+  const metricTotalMeta = document.getElementById("metricTotalMeta");
+  const metricTodayPosts = document.getElementById("metricTodayPosts");
+  const metricTodayMeta = document.getElementById("metricTodayMeta");
+  const metricExpiringPosts = document.getElementById("metricExpiringPosts");
+  const metricExpiringMeta = document.getElementById("metricExpiringMeta");
+  const metricActiveCategories = document.getElementById(
+    "metricActiveCategories"
+  );
+  const metricCategoryMeta = document.getElementById("metricCategoryMeta");
+
+  const boardContextLabel = document.getElementById("boardContextLabel");
+  const recentPostsList = document.getElementById("recentPostsList");
+  const dashboardEmpty = document.getElementById("dashboardEmpty");
+  const upcomingList = document.getElementById("upcomingList");
+  const upcomingEmpty = document.getElementById("upcomingEmpty");
+  const categoryBreakdownEl = document.getElementById("categoryBreakdown");
 
   const postForm = document.getElementById("postForm");
   const inputTitle = document.getElementById("inputTitle");
@@ -93,44 +110,176 @@
 
   function getDefaultPosts() {
     const now = new Date();
-    const todayStr = now.toISOString().slice(0, 10);
+    const dateKey = (offsetDays = 0) => {
+      const d = new Date(now);
+      d.setDate(d.getDate() + offsetDays);
+      return d.toISOString().slice(0, 10);
+    };
+    const iso = (offsetDays = 0, time = "09:00") =>
+      `${dateKey(offsetDays)}T${time}:00`;
 
     return [
       {
         id: 1,
-        category: "all",
-        title: "避難訓練のお知らせ",
-        target: "全校生徒・教職員",
-        body: "今週金曜日、6限終了後に避難訓練を行います。\n\n・持ち物は不要です。\n・教室に荷物を残さず、指示に従って速やかに移動してください。\n・詳細は各クラス担任からの連絡も確認してください。",
-        createdAt: todayStr + "T08:00:00",
-        until: todayStr,
+        category: "club",
+        title: "テニス部 モーニングラリー体験",
+        target: "1年生・ラケットスポーツ希望者",
+        body: "来週の公式戦に向け、朝練体験を開放します。\n\n・日時：火曜・木曜 7:15集合\n・場所：第1テニスコート\n・貸し出しラケットあり、体操服で参加可能です。",
+        createdAt: iso(-8, "07:45"),
+        until: dateKey(2),
       },
       {
         id: 2,
-        category: "club",
-        title: "テニス部 体験入部のお知らせ",
-        target: "1年生・テニスに興味がある人",
-        body: "テニス部では、来週月〜水の放課後に体験入部を行います！\n\n・ラケット貸出あり、運動できる服装でOK\n・初心者歓迎です。\n・集合場所：テニスコート前\n\n少しでも興味があれば、ぜひ気軽に来てください！",
-        createdAt: todayStr + "T09:00:00",
-        until: "",
+        category: "committee",
+        title: "図書委員 読み聞かせリハーサル",
+        target: "図書委員・朗読担当者",
+        body: "交流先小学校での読み聞かせに向けた練習を実施します。\n\n・日時：今週金曜 16:00〜\n・会場：図書室 奥スペース\n・原稿チェックは当日13:00までに提出してください。",
+        createdAt: iso(-5, "12:20"),
+        until: dateKey(0),
       },
       {
         id: 3,
-        category: "committee",
-        title: "図書委員より：読み聞かせボランティア募集",
-        target: "全学年・図書館利用者",
-        body: "図書委員会では、小学校との交流イベントで読み聞かせをしてくれる生徒を募集しています。\n\n・日時：来月第2土曜日 午前中\n・場所：近隣小学校 図書室\n・申込方法：図書室カウンターの申込用紙に記入\n\n人前で話す練習にもなるので、興味のある人はぜひ！",
-        createdAt: todayStr + "T10:30:00",
-        until: "",
+        category: "all",
+        title: "生活安全週間スタート",
+        target: "全校生徒・教職員",
+        body: "今週は生活安全週間です。登下校のマナーや校内での安全行動を改めて確認してください。\n\n・期間：今週月曜〜金曜\n・生徒指導部からの配布資料をホームルームで確認\n・気づいた点は生活委員または教職員へ共有してください。",
+        createdAt: iso(-2, "08:05"),
+        until: dateKey(5),
       },
       {
         id: 4,
         category: "grade",
-        title: "1年生：数学 小テストの再試について",
+        title: "1年生：理科見学レポート提出",
         target: "1年生",
-        body: "先週実施した数学の小テストで、再試対象となった生徒は今週木曜日放課後に再試を行います。\n\n・場所：1-1教室\n・持ち物：筆記用具、ノート\n・対象者：掲示されている受験者一覧を確認してください。",
-        createdAt: todayStr + "T11:15:00",
-        until: "",
+        body: "理科見学のレポートは指定フォーマットで提出してください。\n\n・提出先：理科準備室前ポスト\n・締切：今週水曜 17:00\n・未提出者は担任へ相談してください。",
+        createdAt: iso(-1, "13:10"),
+        until: dateKey(1),
+      },
+      {
+        id: 5,
+        category: "all",
+        title: "全校朝礼：配布アンケートの提出",
+        target: "全校生徒",
+        body: "全校朝礼で配布した改善アンケートはクラス委員が回収します。\n\n・提出期限：明日の朝ホームルーム\n・未提出者は昼休みに職員室へ届けてください。\n・質問は生活指導室まで。",
+        createdAt: iso(1, "09:00"),
+        until: dateKey(2),
+      },
+      {
+        id: 6,
+        category: "club",
+        title: "吹奏楽部 ホールリハーサル日程",
+        target: "吹奏楽部",
+        body: "定期演奏会に向けてホールリハーサルを行います。\n\n・日時：来週月曜 17:00集合\n・会場：市民文化ホール リハーサル室\n・持ち物：楽器一式と譜面ファイル\n開始30分前までに音出しを済ませてください。",
+        createdAt: iso(3, "16:30"),
+        until: dateKey(10),
+      },
+      {
+        id: 7,
+        category: "committee",
+        title: "環境委員 クリーンデイ担当区域",
+        target: "環境委員会",
+        body: "6月分の清掃担当エリアを更新しました。\n\n・第1週：昇降口周辺\n・第2週：中庭と温室\n・第3週：特別教室棟\n・第4週：体育館裏通路\n担当班は前日の終礼で確認してください。",
+        createdAt: iso(4, "15:10"),
+        until: dateKey(14),
+      },
+      {
+        id: 8,
+        category: "grade",
+        title: "2年生：職場体験 事前ミーティング",
+        target: "2年生",
+        body: "職場体験に向けた事前ミーティングを実施します。\n\n・日時：来週水曜 15:40〜\n・場所：視聴覚室\n・持ち物：配布済みワークシートと筆記用具\n・グループ発表の担当割を決定します。",
+        createdAt: iso(6, "07:50"),
+        until: dateKey(20),
+      },
+      {
+        id: 9,
+        category: "all",
+        title: "スクールカフェ 勉強サポートデイ",
+        target: "全校生徒",
+        body: "試験前の放課後に学習サポートスペースを開放します。\n\n・期間：来週月〜木 16:00〜19:00\n・場所：生徒ホール特設席\n・軽食とドリンクを先着順で提供します。",
+        createdAt: iso(9, "11:00"),
+        until: dateKey(12),
+      },
+      {
+        id: 10,
+        category: "club",
+        title: "美術部 オープンアトリエ",
+        target: "美術部・アートに興味がある人",
+        body: "外部講師を招いた公開制作を行います。\n\n・日時：来週土曜 13:00〜16:00\n・体験内容：アクリル画と作品講評\n・汚れてもよい服装で参加してください。",
+        createdAt: iso(12, "14:00"),
+        until: dateKey(14),
+      },
+      {
+        id: 11,
+        category: "committee",
+        title: "生徒会：模擬国連参加者募集",
+        target: "全学年・興味のある人",
+        body: "夏休みの模擬国連オンライン大会に参加する代表生徒を募集します。\n\n・応募締切：今月末\n・応募方法：生徒会メールフォームより\n・説明会：今月20日 17:00 生徒会室\nディベート経験がなくても歓迎します。",
+        createdAt: iso(15, "08:40"),
+        until: dateKey(30),
+      },
+      {
+        id: 12,
+        category: "grade",
+        title: "3年生：進路面談準備会",
+        target: "3年生",
+        body: "進路面談で使用する自己分析シートの書き方を共有します。\n\n・日時：来週金曜 16:10〜\n・場所：進路指導室\n・配布資料を事前に記入しておくとスムーズです。",
+        createdAt: iso(18, "10:15"),
+        until: dateKey(25),
+      },
+      {
+        id: 13,
+        category: "all",
+        title: "地域清掃ボランティア募集",
+        target: "全校生徒・希望者",
+        body: "地域連携推進会が朝の清掃活動に参加する生徒を募集中です。\n\n・実施日：来月第1土曜 7:30集合\n・集合場所：正門前\n・持ち物：軍手、動きやすい服装\n参加希望者は総務部前の申込用紙に記入してください。",
+        createdAt: iso(24, "08:20"),
+        until: dateKey(32),
+      },
+      {
+        id: 14,
+        category: "club",
+        title: "陸上部 夏合宿説明会",
+        target: "陸上部員・マネージャー",
+        body: "夏合宿の参加可否を確認します。\n\n・日時：来月18日 17:20〜\n・場所：第二会議室\n・提出物：保護者同意書の下書き\nマネージャーも参加してください。",
+        createdAt: iso(27, "17:20"),
+        until: dateKey(34),
+      },
+      {
+        id: 15,
+        category: "club",
+        title: "サイエンス部 星見の集い",
+        target: "サイエンス部・天文に興味がある人",
+        body: "夏の星座観察会を校庭で実施します。\n\n・日時：来月15日 19:30集合\n・参加対象：サイエンス部と参加希望生徒\n・望遠鏡は学校で準備しますが、防寒具を持参してください。",
+        createdAt: iso(30, "17:00"),
+        until: dateKey(31),
+      },
+      {
+        id: 16,
+        category: "committee",
+        title: "保健委員 健康測定講習",
+        target: "保健委員・クラス健康担当",
+        body: "新しい体組成計の使い方講習を行います。\n\n・日時：来月20日 16:00〜\n・場所：保健室\n・各クラス2名は参加必須です。\n欠席の場合は代理を立ててください。",
+        createdAt: iso(35, "09:30"),
+        until: dateKey(37),
+      },
+      {
+        id: 17,
+        category: "grade",
+        title: "1年生：夏の林間学校説明会",
+        target: "1年生・保護者",
+        body: "林間学校の行程と班編成を説明します。\n\n・日時：来月25日 15:30〜\n・場所：体育館\n・提出物：健康調査票（当日回収）\n保護者向け資料も配布します。",
+        createdAt: iso(42, "15:40"),
+        until: dateKey(45),
+      },
+      {
+        id: 18,
+        category: "all",
+        title: "図書館 ナイトスタディデイ",
+        target: "全校生徒・自習希望者",
+        body: "テスト直前週に図書館を21時まで開放します。\n\n・期間：来月最終週の水・金曜\n・入退室記録を必ず記入\n・軽食と飲み物は指定のエリアでのみ可\n静かな学習環境づくりに協力してください。",
+        createdAt: iso(50, "12:15"),
+        until: dateKey(52),
       },
     ];
   }
@@ -184,6 +333,73 @@
     }
   }
 
+  // ---------- ボード補助UI（ドット & 次の掲示） ----------
+
+  function updateBoardSupport(filtered) {
+    if (!boardDotsEl || !nextPeekBtn || !nextPeekTitleEl || !nextPeekMetaEl) {
+      return;
+    }
+
+    boardDotsEl.innerHTML = "";
+    const total = filtered.length;
+
+    if (!total) {
+      nextPeekBtn.disabled = true;
+      nextPeekBtn.setAttribute("aria-disabled", "true");
+      nextPeekBtn.setAttribute("aria-label", "次の掲示はありません");
+      nextPeekTitleEl.textContent = "—";
+      nextPeekMetaEl.textContent = "他の掲示はありません";
+      return;
+    }
+
+    const activeIndex = Math.min(Math.max(currentIndex, 0), total - 1);
+
+    filtered.forEach((post, idx) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "board-dot";
+      if (idx === activeIndex) {
+        dot.classList.add("is-active");
+        dot.setAttribute("aria-current", "true");
+      }
+      dot.setAttribute(
+        "aria-label",
+        `${idx + 1}件目: ${post.title || "(無題)"}`
+      );
+      dot.style.setProperty(
+        "--dot-color",
+        getCategoryColor(post.category || "all")
+      );
+      dot.addEventListener("click", () => {
+        goToIndex(idx);
+      });
+      boardDotsEl.appendChild(dot);
+    });
+
+    if (total <= 1) {
+      nextPeekBtn.disabled = true;
+      nextPeekBtn.setAttribute("aria-disabled", "true");
+      nextPeekBtn.setAttribute("aria-label", "次の掲示はありません");
+      nextPeekTitleEl.textContent = "—";
+      nextPeekMetaEl.textContent = "他の掲示はありません";
+      return;
+    }
+
+    const nextIndex = (activeIndex + 1) % total;
+    const nextPost = filtered[nextIndex];
+
+    nextPeekBtn.disabled = false;
+    nextPeekBtn.removeAttribute("aria-disabled");
+    nextPeekBtn.setAttribute(
+      "aria-label",
+      `${nextIndex + 1}件目へ移動: ${nextPost.title || "(無題)"}`
+    );
+    nextPeekTitleEl.textContent = nextPost.title || "(無題)";
+    nextPeekMetaEl.textContent = `${getCategoryLabel(
+      nextPost.category || "all"
+    )} ・ ${nextPost.target || "全校"}`;
+  }
+
   // ---------- ヘルパー ----------
 
   function getCategoryLabel(cat) {
@@ -212,6 +428,81 @@
       default:
         return "#a855f7";
     }
+  }
+
+  const WEEKDAY_LABELS = ["日", "月", "火", "水", "木", "金", "土"];
+  const MS_IN_DAY = 24 * 60 * 60 * 1000;
+
+  function setText(el, text) {
+    if (!el) return;
+    el.textContent = text;
+  }
+
+  function getDateKeyFromISO(iso) {
+    if (!iso || iso.length < 10) return "";
+    return iso.slice(0, 10);
+  }
+
+  function formatDateKey(date) {
+    if (!(date instanceof Date) || Number.isNaN(date.getTime())) return "";
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
+    return `${y}-${m}-${d}`;
+  }
+
+  function getTodayKey() {
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+    return formatDateKey(now);
+  }
+
+  function parseLocalDate(str) {
+    if (!str) return null;
+    const parts = str.split("-");
+    if (parts.length !== 3) return null;
+    const y = Number(parts[0]);
+    const m = Number(parts[1]) - 1;
+    const d = Number(parts[2]);
+    if (Number.isNaN(y) || Number.isNaN(m) || Number.isNaN(d)) return null;
+    const dt = new Date(y, m, d);
+    if (Number.isNaN(dt.getTime())) return null;
+    return dt;
+  }
+
+  function formatDateJP(str) {
+    const dt = parseLocalDate(str);
+    if (!dt) return str || "";
+    const label = `${dt.getMonth() + 1}/${dt.getDate()}`;
+    const weekday = WEEKDAY_LABELS[dt.getDay()] || "";
+    return `${label}(${weekday})`;
+  }
+
+  function formatDateTimeLabel(iso) {
+    if (!iso) return "";
+    const dt = new Date(iso);
+    if (Number.isNaN(dt.getTime())) return "";
+    const month = String(dt.getMonth() + 1).padStart(2, "0");
+    const day = String(dt.getDate()).padStart(2, "0");
+    const hh = String(dt.getHours()).padStart(2, "0");
+    const mm = String(dt.getMinutes()).padStart(2, "0");
+    return `${month}/${day} ${hh}:${mm}`;
+  }
+
+  function describeDueDifference(targetStr, baseStr) {
+    const target = parseLocalDate(targetStr);
+    const base = parseLocalDate(baseStr);
+    if (!target || !base) return "";
+    const diffDays = Math.round(
+      (target.setHours(0, 0, 0, 0) - base.setHours(0, 0, 0, 0)) / MS_IN_DAY
+    );
+    if (diffDays < 0) {
+      return `${Math.abs(diffDays)}日前に締切超過`;
+    }
+    if (diffDays === 0) return "今日が期限";
+    if (diffDays === 1) return "明日まで";
+    if (diffDays <= 7) return `${diffDays}日後に締切`;
+    return `${diffDays}日後`;
   }
 
   // 「全体」は *全投稿* を時系列で流す（バグ修正＆直感優先）
@@ -311,41 +602,333 @@
     restartSlideTimer();
     restartCategoryTimer();
   }
+  function updateDashboardPanels(filtered) {
+    const totalPosts = posts.length;
+    const todayKey = getTodayKey();
+    const weekStart = new Date();
+    weekStart.setHours(0, 0, 0, 0);
+    weekStart.setDate(weekStart.getDate() - 6);
+    const weekStartKey = formatDateKey(weekStart);
 
-  // ---------- プレビューカード（バグ修正込み） ----------
+    let todayCount = 0;
+    let weekCount = 0;
+    let latestTodayIso = "";
+    const activeCategories = new Set();
 
-  function updatePreviewCards(filtered) {
-    if (!previewPrevCard || !previewNextCard) return;
+    for (const post of posts) {
+      const cat = post.category || "all";
+      activeCategories.add(cat);
 
-    const total = filtered.length;
+      const createdKey = getDateKeyFromISO(post.createdAt || "");
+      if (!createdKey) continue;
 
-    if (total <= 1) {
-      previewPrevCard.classList.remove("show");
-      previewNextCard.classList.remove("show");
+      if (createdKey === todayKey) {
+        todayCount += 1;
+        if (!latestTodayIso || (post.createdAt || "") > latestTodayIso) {
+          latestTodayIso = post.createdAt || latestTodayIso;
+        }
+      }
+
+      if (createdKey >= weekStartKey && createdKey <= todayKey) {
+        weekCount += 1;
+      }
+    }
+
+    setText(metricTotalPosts, String(totalPosts));
+    if (metricTotalMeta) {
+      metricTotalMeta.textContent = totalPosts
+        ? `直近7日：${weekCount}件追加`
+        : "掲示はまだありません";
+    }
+
+    setText(metricTodayPosts, String(todayCount));
+    if (metricTodayMeta) {
+      if (todayCount > 0) {
+        const latestLabel = formatDateTimeLabel(latestTodayIso);
+        metricTodayMeta.textContent = latestLabel
+          ? `${latestLabel} 更新`
+          : "今日登録された掲示";
+      } else {
+        metricTodayMeta.textContent = "新しい掲示はありません";
+      }
+    }
+
+    const todayDate = parseLocalDate(todayKey);
+    const upcomingThreshold = todayDate
+      ? new Date(todayDate.getTime() + 7 * MS_IN_DAY)
+      : null;
+
+    const upcoming = posts
+      .map((post) => ({
+        post,
+        dueKey: post.until || "",
+        dueDate: parseLocalDate(post.until || ""),
+      }))
+      .filter((item) => item.dueDate && todayDate && item.dueDate >= todayDate)
+      .filter((item) =>
+        upcomingThreshold ? item.dueDate <= upcomingThreshold : true
+      )
+      .sort((a, b) => (a.dueDate || 0) - (b.dueDate || 0));
+
+    setText(metricExpiringPosts, String(upcoming.length));
+    if (metricExpiringMeta) {
+      metricExpiringMeta.textContent = upcoming.length
+        ? `${formatDateJP(upcoming[0].dueKey)} まで`
+        : "7日以内の締切なし";
+    }
+
+    setText(metricActiveCategories, String(activeCategories.size));
+    if (metricCategoryMeta) {
+      metricCategoryMeta.textContent = totalPosts
+        ? `${activeCategories.size} / 4カテゴリ稼働中`
+        : "全カテゴリ未稼働";
+    }
+
+    if (boardContextLabel) {
+      if (!filtered.length) {
+        boardContextLabel.textContent = `${getCategoryLabel(
+          currentCategory
+        )}カテゴリの掲示はありません`;
+      } else {
+        const label = getCategoryLabel(currentCategory);
+        boardContextLabel.textContent = `${label} / ${filtered.length}件中 ${
+          Math.min(currentIndex + 1, filtered.length)
+        }件目`;
+      }
+    }
+
+    renderRecentPosts();
+    renderUpcomingTimeline(upcoming, todayKey);
+    renderCategoryBreakdown(totalPosts);
+  }
+
+  function renderRecentPosts() {
+    if (!recentPostsList) return;
+
+    recentPostsList.innerHTML = "";
+    const sorted = posts
+      .slice()
+      .sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""));
+    const subset = sorted.slice(0, 5);
+
+    if (!subset.length) {
+      recentPostsList.style.display = "none";
+      if (dashboardEmpty) dashboardEmpty.style.display = "block";
       return;
     }
 
-    const prevIdx = (currentIndex - 1 + total) % total;
-    const nextIdx = (currentIndex + 1) % total;
+    recentPostsList.style.display = "";
+    if (dashboardEmpty) dashboardEmpty.style.display = "none";
 
-    const prevPost = filtered[prevIdx];
-    const nextPost = filtered[nextIdx];
+    subset.forEach((post) => {
+      const listItem = document.createElement("li");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "insight-item";
+      button.dataset.postId = String(post.id);
+      button.style.setProperty(
+        "--cat-color",
+        getCategoryColor(post.category || "all")
+      );
 
-    // 前
-    previewPrevCard.style.setProperty(
-      "--cat-color",
-      getCategoryColor(prevPost.category || "all")
-    );
-    previewPrevTitle.textContent = prevPost.title || "(無題)";
-    previewPrevCard.classList.add("show");
+      const header = document.createElement("div");
+      header.className = "insight-row-header";
 
-    // 次
-    previewNextCard.style.setProperty(
-      "--cat-color",
-      getCategoryColor(nextPost.category || "all")
-    );
-    previewNextTitle.textContent = nextPost.title || "(無題)";
-    previewNextCard.classList.add("show");
+      const headerLeft = document.createElement("div");
+      headerLeft.style.display = "flex";
+      headerLeft.style.alignItems = "center";
+      headerLeft.style.gap = "8px";
+
+      const dot = document.createElement("span");
+      dot.className = "insight-dot";
+      const title = document.createElement("span");
+      title.textContent = post.title || "(無題)";
+
+      headerLeft.appendChild(dot);
+      headerLeft.appendChild(title);
+      header.appendChild(headerLeft);
+
+      const updatedAt = formatDateTimeLabel(post.createdAt || "");
+      if (updatedAt) {
+        const time = document.createElement("span");
+        time.className = "insight-row-time";
+        time.textContent = updatedAt;
+        header.appendChild(time);
+      }
+
+      const meta = document.createElement("div");
+      meta.className = "insight-row-meta";
+      meta.textContent = `${getCategoryLabel(post.category || "all")} ・ ${
+        post.target || "全校"
+      }`;
+
+      const footer = document.createElement("div");
+      footer.className = "insight-row-footer";
+      footer.textContent = post.until
+        ? `${formatDateJP(post.until)} まで`
+        : "期限なし";
+
+      button.appendChild(header);
+      button.appendChild(meta);
+      button.appendChild(footer);
+
+      button.addEventListener("click", () => {
+        focusPostById(post.id);
+      });
+
+      listItem.appendChild(button);
+      recentPostsList.appendChild(listItem);
+    });
+  }
+
+  function renderUpcomingTimeline(upcoming, todayKey) {
+    if (!upcomingList) return;
+
+    upcomingList.innerHTML = "";
+
+    if (!upcoming.length) {
+      upcomingList.style.display = "none";
+      if (upcomingEmpty) upcomingEmpty.style.display = "block";
+      return;
+    }
+
+    upcomingList.style.display = "";
+    if (upcomingEmpty) upcomingEmpty.style.display = "none";
+
+    upcoming.slice(0, 6).forEach(({ post, dueKey }) => {
+      const listItem = document.createElement("li");
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "insight-item";
+      button.style.setProperty(
+        "--cat-color",
+        getCategoryColor(post.category || "all")
+      );
+
+      const header = document.createElement("div");
+      header.className = "insight-row-header";
+
+      const headerLeft = document.createElement("div");
+      headerLeft.style.display = "flex";
+      headerLeft.style.alignItems = "center";
+      headerLeft.style.gap = "8px";
+
+      const dot = document.createElement("span");
+      dot.className = "insight-dot";
+      const title = document.createElement("span");
+      title.textContent = post.title || "(無題)";
+      headerLeft.append(dot, title);
+      header.appendChild(headerLeft);
+
+      const dueLabel = formatDateJP(dueKey);
+      if (dueLabel) {
+        const due = document.createElement("span");
+        due.className = "insight-row-time";
+        due.textContent = dueLabel;
+        header.appendChild(due);
+      }
+
+      const meta = document.createElement("div");
+      meta.className = "insight-row-meta";
+      meta.textContent = `${getCategoryLabel(post.category || "all")} ・ ${
+        post.target || "全校"
+      }`;
+
+      const footer = document.createElement("div");
+      footer.className = "insight-row-footer";
+      footer.textContent = describeDueDifference(dueKey, todayKey) || "";
+
+      button.append(header, meta, footer);
+
+      button.addEventListener("click", () => {
+        focusPostById(post.id);
+      });
+
+      listItem.appendChild(button);
+      upcomingList.appendChild(listItem);
+    });
+  }
+
+  function renderCategoryBreakdown(totalPosts) {
+    if (!categoryBreakdownEl) return;
+
+    categoryBreakdownEl.innerHTML = "";
+
+    if (!totalPosts) {
+      const empty = document.createElement("p");
+      empty.className = "panel-empty";
+      empty.textContent = "掲示が登録されるとカテゴリ内訳が表示されます。";
+      categoryBreakdownEl.appendChild(empty);
+      return;
+    }
+
+    const categories = [
+      { id: "all", label: getCategoryLabel("all") },
+      { id: "club", label: getCategoryLabel("club") },
+      { id: "committee", label: getCategoryLabel("committee") },
+      { id: "grade", label: getCategoryLabel("grade") },
+    ];
+
+    const counts = new Map();
+    categories.forEach((cat) => counts.set(cat.id, 0));
+
+    posts.forEach((post) => {
+      const cat = post.category || "all";
+      if (!counts.has(cat)) {
+        counts.set(cat, 0);
+        categories.push({ id: cat, label: getCategoryLabel(cat) });
+      }
+      counts.set(cat, (counts.get(cat) || 0) + 1);
+    });
+
+    categories.forEach((cat) => {
+      const count = counts.get(cat.id) || 0;
+      const rawPercent = totalPosts ? (count / totalPosts) * 100 : 0;
+      const percentLabel =
+        rawPercent <= 0
+          ? "0"
+          : rawPercent >= 10
+          ? rawPercent.toFixed(0)
+          : rawPercent.toFixed(1);
+      const row = document.createElement("div");
+      row.className = "category-breakdown-row";
+
+      const head = document.createElement("div");
+      head.className = "category-breakdown-head";
+
+      const left = document.createElement("div");
+      left.style.display = "flex";
+      left.style.alignItems = "center";
+      left.style.gap = "8px";
+
+      const dot = document.createElement("span");
+      dot.className = "insight-dot";
+      dot.style.setProperty("--cat-color", getCategoryColor(cat.id));
+
+      const label = document.createElement("span");
+      label.textContent = cat.label;
+
+      left.append(dot, label);
+
+      const value = document.createElement("span");
+      value.textContent = `${count}件 (${percentLabel}%)`;
+
+      head.append(left, value);
+
+      const bar = document.createElement("div");
+      bar.className = "category-breakdown-bar";
+
+      const barInner = document.createElement("span");
+      const width = rawPercent > 0 ? Math.max(rawPercent, 6) : 0;
+      barInner.style.width = `${Math.min(width, 100)}%`;
+      const color = getCategoryColor(cat.id);
+      barInner.style.background = `linear-gradient(90deg, ${color}, ${color})`;
+
+      bar.appendChild(barInner);
+      row.append(head, bar);
+
+      categoryBreakdownEl.appendChild(row);
+    });
   }
 
   // ---------- レンダリング ----------
@@ -368,8 +951,9 @@
       postIndexLabelEl.textContent = "0 / 0";
       postTimeLabelEl.textContent = "";
       currentPostDate = null;
-      updatePreviewCards([]);
+      updateBoardSupport([]);
       buildCalendar();
+      updateDashboardPanels(filtered);
       return;
     }
 
@@ -437,8 +1021,9 @@
       calendarMonth = m;
     }
 
-    updatePreviewCards(filtered);
+    updateBoardSupport(filtered);
     buildCalendar();
+    updateDashboardPanels(filtered);
   }
 
   function animateCard(direction) {
@@ -449,6 +1034,19 @@
   }
 
   // ---------- スライド操作 ----------
+
+  function goToIndex(targetIndex, manual = true) {
+    const filtered = getFilteredPosts();
+    if (!filtered.length) return;
+    const total = filtered.length;
+    const clamped = Math.max(0, Math.min(targetIndex, total - 1));
+    const previous = currentIndex;
+    if (clamped === previous) return;
+    currentIndex = clamped;
+    animateCard(clamped > previous ? "left" : "right");
+    render();
+    if (manual) restartSlideTimer();
+  }
 
   function goNext(manual = false) {
     const filtered = getFilteredPosts();
@@ -733,12 +1331,8 @@
   prevBtn.addEventListener("click", () => goPrev(true));
   nextBtn.addEventListener("click", () => goNext(true));
 
-  // プレビューカードもタップで移動
-  if (previewPrevCard) {
-    previewPrevCard.addEventListener("click", () => goPrev(true));
-  }
-  if (previewNextCard) {
-    previewNextCard.addEventListener("click", () => goNext(true));
+  if (nextPeekBtn) {
+    nextPeekBtn.addEventListener("click", () => goNext(true));
   }
 
   // Board：スワイプ操作
@@ -746,42 +1340,51 @@
   let touchStartY = null;
   let touchStartTime = 0;
 
-  boardPanel.addEventListener(
-    "touchstart",
-    (e) => {
-      const t = e.touches[0];
-      touchStartX = t.clientX;
-      touchStartY = t.clientY;
-      touchStartTime = Date.now();
-    },
-    { passive: true }
-  );
+  if (boardPanel) {
+    boardPanel.addEventListener(
+      "touchstart",
+      (e) => {
+        const t = e.touches[0];
+        touchStartX = t.clientX;
+        touchStartY = t.clientY;
+        touchStartTime = Date.now();
+      },
+      { passive: true }
+    );
 
-  boardPanel.addEventListener("touchend", (e) => {
-    if (touchStartX === null || touchStartY === null) return;
+    boardPanel.addEventListener("touchend", (e) => {
+      if (touchStartX === null || touchStartY === null) return;
 
-    const t = e.changedTouches[0];
-    const dx = t.clientX - touchStartX;
-    const dy = t.clientY - touchStartY;
-    const dt = Date.now() - touchStartTime;
+      const t = e.changedTouches[0];
+      const dx = t.clientX - touchStartX;
+      const dy = t.clientY - touchStartY;
+      const dt = Date.now() - touchStartTime;
 
-    touchStartX = null;
-    touchStartY = null;
+      touchStartX = null;
+      touchStartY = null;
 
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
-      if (dx < 0) goNext(true);
-      else goPrev(true);
-      return;
-    }
-
-    if (dt < 350 && Math.abs(dy) > 60 && Math.abs(dy) > Math.abs(dx)) {
-      if (dy < 0) {
-        rotateCategory();
-      } else {
-        openEditor();
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+        if (dx < 0) goNext(true);
+        else goPrev(true);
+        return;
       }
-    }
-  });
+
+      if (dt < 350 && Math.abs(dy) > 60 && Math.abs(dy) > Math.abs(dx)) {
+        if (dy < 0) {
+          rotateCategory();
+        } else {
+          openEditor();
+        }
+      }
+    });
+
+    boardPanel.addEventListener("mouseenter", () => {
+      stopSlideTimer();
+    });
+    boardPanel.addEventListener("mouseleave", () => {
+      restartSlideTimer();
+    });
+  }
 
   // カテゴリタップ
   categoryChips.forEach((chip) => {
@@ -795,14 +1398,6 @@
   window.goToNextCard = function(){
     try { goNext(true); } catch(e) {}
   };
-
-  // ボードホバー中は自動送りを停止／離れたら再開
-  boardPanel.addEventListener("mouseenter", () => {
-    stopSlideTimer();
-  });
-  boardPanel.addEventListener("mouseleave", () => {
-    restartSlideTimer();
-  });
 
   // 書くシート
   writeBtn.addEventListener("click", openEditor);

@@ -101,6 +101,25 @@
   </style>
 </head>
 <body class="page-top">
+  <div class="page-loader" id="page-loader" role="status" aria-live="polite">
+    <div class="loader-shell">
+      <div class="loader-orbit" aria-hidden="true">
+        <div class="loader-pulse"></div>
+        <div class="loader-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <div class="loader-panel">
+        <p class="loader-panel-label">Now Loading</p>
+        <p class="loader-panel-title">Tangible School Board</p>
+        <p class="loader-panel-hint-label">ヒント</p>
+        <p class="loader-panel-hint" data-loader-hint>今日の校内連絡を整理しています…</p>
+      </div>
+    </div>
+  </div>
   <div class="page-progress" aria-hidden="true">
     <div class="page-progress-bar" id="pageProgressBar"></div>
   </div>
@@ -109,13 +128,13 @@
     <nav class="nav" aria-label="グローバルナビゲーション">
       <div class="brand"><span class="brand-dot" aria-hidden="true"></span> TANGIBLE SCHOOL BOARD</div>
       <div class="menu" role="navigation" aria-label="ページナビ">
-    <a class="nav-link" href="./index.html" data-target="top">TOP</a>
-    <a class="nav-link" href="./features.html" data-target="features">機能紹介</a>
-    <a class="nav-link" href="./why.html" data-target="why">なぜ実装したのか</a>
-    <a class="nav-link" href="./tangible.html" data-target="tangible">タンジブルの意味</a>
-    <a class="nav-link" href="./roadmap.html" data-target="future">今後の発展</a>
-    <a class="nav-link" href="./making.html" data-target="story">作成時の苦労</a>
-    <a class="btn small demo-btn" href="../board.html" target="_blank" rel="noopener">デモをひらく</a>
+        <a class="nav-link" href="./index.html" data-target="top">TOP</a>
+        <a class="nav-link" href="./features.html" data-target="features">機能紹介</a>
+        <a class="nav-link" href="./why.html" data-target="why">なぜ実装したのか</a>
+        <a class="nav-link" href="./tangible.html" data-target="tangible">タンジブルの意味</a>
+        <a class="nav-link" href="./roadmap.html" data-target="future">今後の発展</a>
+        <a class="nav-link" href="./making.html" data-target="story">作成時の苦労</a>
+        <a class="btn small demo-btn" href="../board.html" target="_blank" rel="noopener">デモをひらく</a>
       </div>
     </nav>
   </header>
@@ -364,33 +383,6 @@
     <div class="container">© 2025 Tangible School Board</div>
   </footer>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const bar = document.getElementById('pageProgressBar');
-      if (!bar) return;
-
-      const calcProgress = () => {
-        const doc = document.documentElement;
-        const scrollTop = doc.scrollTop || document.body.scrollTop;
-        const scrollable = doc.scrollHeight - doc.clientHeight;
-        const ratio = scrollable <= 0 ? 0 : scrollTop / scrollable;
-        bar.style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
-      };
-
-      let rafId = null;
-      const queueUpdate = () => {
-        if (rafId) return;
-        rafId = requestAnimationFrame(() => {
-          calcProgress();
-          rafId = null;
-        });
-      };
-
-      calcProgress();
-      window.addEventListener('scroll', queueUpdate, { passive: true });
-      window.addEventListener('resize', queueUpdate);
-    });
-  </script>
   <script src="./common.js" defer></script>
   <script src="./site.js" defer></script>
 </body>

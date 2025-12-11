@@ -7,13 +7,13 @@
   <link rel="stylesheet" href="./common.css" />
   <style>
     :root {
-      --page-progress-bg: rgba(255, 255, 255, 0.16);
-      --page-progress-fill: #4f8dff;
+      --page-progress-bg: rgba(255, 255, 255, 0.12);
+      --page-progress-fill: var(--accent-page);
     }
     .main-centered {
-      max-width: 1100px;
+      max-width: 960px;
       margin: 0 auto;
-      padding: 0 2rem 4rem;
+      padding: 0 2rem 5rem;
     }
     .page-progress {
       position: fixed;
@@ -31,212 +31,187 @@
       width: 0%;
       height: 100%;
       border-radius: inherit;
-      background: linear-gradient(90deg, var(--page-progress-fill), #92b5ff);
-      transition: width 0.15s ease;
+      background: linear-gradient(90deg, var(--page-progress-fill), rgba(255, 255, 255, 0.65));
+      transition: width 0.2s ease;
     }
-    .hero-details {
-      list-style: none;
-      margin: 1rem 0 0;
-      padding: 0;
+    .article {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 0.5rem 1rem;
+      gap: 3rem;
+      padding: 4.5rem 0 0;
     }
-    .hero-details li {
-      position: relative;
-      padding-left: 1.3rem;
-      line-height: 1.6;
-    }
-    .hero-details li::before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: var(--page-progress-fill);
-    }
-    .hero-stats {
+    .article-header {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
-      margin-top: 1.5rem;
     }
-    .hero-stat {
-      padding: 1.2rem;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(6px);
+    .article-eyebrow {
+      font-size: 0.85rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(22, 94, 115, 0.6);
     }
-    .hero-stat label {
-      font-size: 0.78rem;
-      letter-spacing: 0.04em;
-      opacity: 0.75;
-      display: block;
+    .article-header h1 {
+      margin: 0;
+      font-size: clamp(2rem, 3vw, 2.6rem);
     }
-    .hero-stat strong {
-      display: block;
-      font-size: 1.35rem;
-      margin: 0.35rem 0;
+    .article-header p {
+      margin: 0;
+      line-height: 1.8;
+      color: rgba(15, 76, 95, 0.8);
     }
-    .hero-stat span {
-      font-size: 0.8rem;
-      opacity: 0.8;
-    }
-    .info-density {
-      background: linear-gradient(135deg, rgba(79, 141, 255, 0.08), rgba(255, 255, 255, 0));
-      border-radius: 24px;
-      padding: 2rem;
-      margin-top: 2rem;
-    }
-    .info-columns {
+    .article-section {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(45, 142, 172, 0.12);
+      border-radius: 22px;
+      padding: clamp(1.8rem, 3vw, 2.6rem);
+      box-shadow: 0 18px 38px rgba(45, 142, 172, 0.16);
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.25rem;
-      margin-top: 1.5rem;
+      gap: 1.6rem;
     }
-    .info-card {
-      padding: 1.5rem;
-      border-radius: 16px;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      background: #fff;
-      box-shadow: 0 12px 30px rgba(20, 34, 76, 0.08);
+    .article-section h2 {
+      margin: 0;
+      font-size: clamp(1.45rem, 2.4vw, 1.85rem);
+      color: var(--accent-page);
+    }
+    .article-section p {
+      margin: 0;
+      line-height: 1.8;
+      color: rgba(15, 76, 95, 0.8);
+    }
+    .article-section ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      display: grid;
+      gap: 0.5rem;
+      color: rgba(15, 76, 95, 0.8);
+    }
+    .article-subsection { display: grid; gap: 0.75rem; }
+    .article-subsection h3 { margin: 0; font-size: 1.15rem; color: rgba(15, 76, 95, 0.9); }
+    @media (max-width: 720px) {
+      .main-centered { padding: 0 1.5rem 4rem; }
+      .article-section { border-radius: 18px; }
     }
   </style>
 </head>
 <body class="page-roadmap">
+  <div class="page-loader" id="page-loader" role="status" aria-live="polite">
+    <div class="loader-shell">
+      <div class="loader-orbit" aria-hidden="true">
+        <div class="loader-pulse"></div>
+        <div class="loader-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <div class="loader-panel">
+        <p class="loader-panel-label">Now Loading</p>
+        <p class="loader-panel-title">Tangible School Board</p>
+        <p class="loader-panel-hint-label">ヒント</p>
+        <p class="loader-panel-hint" data-loader-hint>今日の校内連絡を整理しています…</p>
+      </div>
+    </div>
+  </div>
   <div class="page-progress" aria-hidden="true">
     <div class="page-progress-bar" id="pageProgressBar"></div>
   </div>
   <header class="header">
-    <nav class="nav">
-      <div class="brand"><span class="brand-dot"></span> TANGIBLE SCHOOL BOARD</div>
-      <div class="menu">
-        <a class="nav-link" href="./index.html">TOP</a>
-        <a class="nav-link" href="./features.html">機能紹介</a>
-        <a class="nav-link" href="./why.html">なぜ実装したのか</a>
-        <a class="nav-link" href="./tangible.html">タンジブルの意味</a>
-        <a class="nav-link" href="./roadmap.html">今後の発展</a>
-        <a class="nav-link" href="./making.html">作成時の苦労</a>
+    <nav class="nav" aria-label="グローバルナビゲーション">
+      <div class="brand"><span class="brand-dot" aria-hidden="true"></span> TANGIBLE SCHOOL BOARD</div>
+      <div class="menu" role="navigation" aria-label="ページナビ">
+        <a class="nav-link" href="./index.html" data-target="top">TOP</a>
+        <a class="nav-link" href="./features.html" data-target="features">機能紹介</a>
+        <a class="nav-link" href="./why.html" data-target="why">なぜ実装したのか</a>
+        <a class="nav-link" href="./tangible.html" data-target="tangible">タンジブルの意味</a>
+        <a class="nav-link" href="./roadmap.html" data-target="future">今後の発展</a>
+        <a class="nav-link" href="./making.html" data-target="story">作成時の苦労</a>
+        <a class="btn small demo-btn" href="../board.html" target="_blank" rel="noopener">デモをひらく</a>
       </div>
     </nav>
   </header>
 
   <main class="main-centered">
-    <!-- ファーストビュー：共通カードフレーム（右にミニステップ） -->
-    <section class="section section-hero">
-      <div class="hero-shell">
-        <article class="hero-card">
-          <div class="hero-card-main">
-            <p class="hero-eyebrow">ROADMAP</p>
-            <h1 class="hero-title">教室から、学校全体、そしてその先へ。</h1>
-            <p class="hero-lead">まずは1クラス・1フロアから。運用の実験を重ねながら、校内全体、さらには複数校へと広げていく計画です。</p>
-            <ul class="hero-details">
-              <li>校舎の中央ラインに合わせたUI幅を維持し、どの拠点でも同じ体験を提供。</li>
-              <li>各ステップで「情報の流れ」「権限」「保守負荷」をセットで検証。</li>
-              <li>導入校同士でナレッジを交換し、紙掲示からの移行率を指標化します。</li>
-            </ul>
-            <div class="hero-actions">
-              <a class="btn primary" href="#steps">ロードマップを見る</a>
-            </div>
-            <div class="hero-stats" role="list">
-              <div class="hero-stat" role="listitem">
-                <label>PoC学校</label>
-                <strong>3校</strong>
-                <span>中学2・高校1</span>
-              </div>
-              <div class="hero-stat" role="listitem">
-                <label>紙掲示削減</label>
-                <strong>-42%</strong>
-                <span>Step01検証2ヶ月平均</span>
-              </div>
-              <div class="hero-stat" role="listitem">
-                <label>教員満足度</label>
-                <strong>4.3/5</strong>
-                <span>運用しやすさアンケート</span>
-              </div>
-            </div>
-          </div>
-          <div class="hero-card-visual"><div class="mock">Step 1 / Step 2 / Step 3 の簡略カード</div></div>
-        </article>
-      </div>
-    </section>
+    <article class="article">
+      <header class="article-header">
+        <p class="article-eyebrow">ROADMAP</p>
+        <h1>教室から、学校全体、そしてその先へ</h1>
+        <p>まずは1クラス・1フロアから。運用の実験を重ねながら、校内全体、さらには複数校へと広げていく姿を描きました。</p>
+      </header>
 
-    <!-- 横スクロールのステップカード群 -->
-  <section id="steps" class="section">
-      <div class="container">
-        <div class="card big" style="overflow-x:auto; white-space:nowrap; padding:18px;">
-          <div style="display:inline-grid; grid-auto-flow:column; grid-auto-columns:minmax(260px, 1fr); gap:12px;">
-            <div class="card reveal" style="min-width:260px;"><h3>Step 01：校内実験版</h3><p>クラス単位で運用し、使い勝手を検証。</p></div>
-            <div class="card reveal" style="min-width:260px;"><h3>Step 02：教員ポータル連携</h3><p>時間割・成績処理などと緩やかに接続。</p></div>
-            <div class="card reveal" style="min-width:260px;"><h3>Step 03：複数校連携</h3><p>大会情報・合同イベントなどを共有。</p></div>
-            <div class="card reveal" style="min-width:260px;"><h3>Step 04：AIによる整理</h3><p>類似掲示の自動グループ化、期限優先。</p></div>
-          </div>
+      <section class="article-section">
+        <h2>学校の中で目指したい理想形</h2>
+        <p>本格運用を見据え、Tangible School Board を段階的に広げていくロードマップを用意しました。</p>
+        <div class="article-subsection">
+          <h3>Step 1：昇降口に一枚だけ置かれた「実験ボード」</h3>
+          <ul>
+            <li>全校共通の行事やテスト情報、部活動の重要連絡など「誰にでも関係がある情報」に限定して運用します。</li>
+            <li>先生と相談しながら「これは紙」「これはボード」と役割を分担し、導入のルールを整えていきます。</li>
+          </ul>
         </div>
-        <p class="subtle" style="text-align:center; margin-top:10px;">左右にスワイプ／スクロールできます。</p>
-      </div>
-    </section>
+        <div class="article-subsection">
+          <h3>Step 2：学年・フロアごとのボードへの拡張</h3>
+          <ul>
+            <li>昇降口での実験を通じて運用ルールが固まったら、学年フロアや特別教室の前にも小型ボードを設置します。</li>
+            <li>学年ごとのテスト情報や特定フロアの掲示だけを表示し、「自分ごと感」のある情報に絞り込みます。</li>
+          </ul>
+        </div>
+        <div class="article-subsection">
+          <h3>Step 3：先生側の入力フローを整える</h3>
+          <ul>
+            <li>先生が情報を入力するためのフォームやテンプレートを用意し、「プリントを作る感覚でカードを作る」体験を目指します。</li>
+            <li>Google スプレッドシートや校内共有ドライブと連携し、一度入力した情報が自動でボードにも反映される仕組みを検討します。</li>
+          </ul>
+        </div>
+      </section>
 
-    <!-- 技術的チャレンジ -->
-    <section class="section">
-      <div class="container">
-        <h2>技術的チャレンジ（メモ）</h2>
-        <div class="card-grid three">
-          <div class="card reveal"><h3>認証・権限</h3><p>ロールと責務に応じた編集権限。</p></div>
-          <div class="card reveal"><h3>校内インフラ</h3><p>校内Wi‑Fi、既存システム連携。</p></div>
-          <div class="card reveal"><h3>運用</h3><p>バックアップと同期、変更履歴管理。</p></div>
+      <section class="article-section">
+        <h2>学校以外の場所での活躍のイメージ</h2>
+        <p>Tangible School Board の考え方は、学校以外にも応用できると感じています。</p>
+        <div class="article-subsection">
+          <h3>塾や予備校</h3>
+          <p>授業変更、模試の日程、自習室の混雑状況などを一枚のボードにまとめます。</p>
         </div>
-      </div>
-    </section>
-    <section class="section info-density" aria-label="中央寄せUIと拡張計画">
-      <div class="container">
-        <h2>中央寄せUIを軸にしたスケール戦略</h2>
-        <p>どの校舎でも“真ん中に立てば全体が読める”距離感を共通化し、導入先ごとの改修コストを抑えたまま機能拡張できるようにしました。</p>
-        <div class="info-columns">
-          <div class="info-card">
-            <h3>Step01：校内実験</h3>
-            <p>1フロアの配線長と光量を測定し、紙掲示との共存幅を50cm単位で記録。中央寄せ配置の導線図をフォーマット化。</p>
-          </div>
-          <div class="info-card">
-            <h3>Step02：教員ポータル連携</h3>
-            <p>教務システムとのAPI連携では、カテゴリ別に「教員>生徒>公開」の優先度を設計。中央列に表示される情報量を1モジュール=24pxで統一。</p>
-          </div>
-          <div class="info-card">
-            <h3>Step03：複数校ネットワーク</h3>
-            <p>イベント情報を共通フォーマットでやりとりし、学校固有の掲示は中央寄せ列のまま、外部カードを周辺に重ねる設計を計画中。</p>
-          </div>
+        <div class="article-subsection">
+          <h3>図書館や公民館</h3>
+          <p>イベントの日程、貸出ランキング、休館日などをビジュアルで表示します。</p>
         </div>
-        <p style="margin-top:1.5rem;">AI整理フェーズでは中央カラムに優先カードをまとめ、サイドに候補カードを“待機”表示することで、立ち位置を変えずに意思決定できるUIを目指しています。</p>
-      </div>
-    </section>
+        <div class="article-subsection">
+          <h3>地域のコミュニティスペース</h3>
+          <p>ボランティア募集、地域行事、防災情報を「通りがかりで見える形」で提供します。</p>
+        </div>
+        <div class="article-subsection">
+          <h3>病院やクリニックの待合室</h3>
+          <p>診療スケジュール、待ち時間の目安、健康情報のコラムを表示します。</p>
+        </div>
+        <p>共通するのは、「わざわざアプリを開かなくても、そこに行けば情報が分かる」という体験です。場所の空気と一緒に情報を感じてもらうディスプレイを目指します。</p>
+      </section>
+
+      <section class="article-section">
+        <h2>これから実装していきたい機能案</h2>
+        <p>より多くの場所で活躍させるために、次のような機能を構想しています。</p>
+        <ul>
+          <li>複数ボード間で同じカードを共有できる「共有チャンネル」機能。</li>
+          <li>利用環境に合わせてレイアウトやフォントサイズを自動調整する「距離モード」。</li>
+          <li>音声読み上げやコントラスト調整など、アクセシビリティに配慮した表示モード。</li>
+          <li>緊急時にすべてのボードを同じ警告画面へ切り替える「一斉アラート」機能。</li>
+        </ul>
+        <p>高校生だけでは一度に全てを実装できませんが、理想像を頭に置きながら、今できることから形にしていきます。</p>
+      </section>
+
+      <section class="article-section">
+        <h2>高校生としての正直な願い</h2>
+        <p>このボードを作る理由の一つは、「自分があの頃こういう仕組みが欲しかったから」です。</p>
+        <ul>
+          <li>プリントをなくして怒られた自分。</li>
+          <li>掲示の小さな字を読みたくなくてスルーしてしまった自分。</li>
+          <li>部活の連絡を聞き逃して遅刻した自分。</li>
+        </ul>
+        <p>そうした「ちょっとした失敗」を仕組みで減らし、「ちゃんと情報が届く学校」に近づけたい。Tangible School Board を通して、学校や公共の場所がもう少し優しく、分かりやすい場所になることを願っています。</p>
+      </section>
+    </article>
   </main>
 
   <footer class="footer"><div class="container">© 2025 Tangible School Board</div></footer>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const bar = document.getElementById('pageProgressBar');
-      if (!bar) return;
-
-      const calcProgress = () => {
-        const doc = document.documentElement;
-        const scrollTop = doc.scrollTop || document.body.scrollTop;
-        const scrollable = doc.scrollHeight - doc.clientHeight;
-        const ratio = scrollable <= 0 ? 0 : scrollTop / scrollable;
-        bar.style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
-      };
-
-      let rafId = null;
-      const queueUpdate = () => {
-        if (rafId) return;
-        rafId = requestAnimationFrame(() => {
-          calcProgress();
-          rafId = null;
-        });
-      };
-
-      calcProgress();
-      window.addEventListener('scroll', queueUpdate, { passive: true });
-      window.addEventListener('resize', queueUpdate);
-    });
-  </script>
   <script src="./common.js" defer></script>
 </body>
 </html>

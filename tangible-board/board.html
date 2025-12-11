@@ -4,118 +4,184 @@
   <meta charset="UTF-8">
   <title>誰でもその場で書ける、見られる掲示板（プロトタイプ）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="app">
-    <header class="top-bar">
+  <div class="app dashboard-app">
+    <header class="top-bar dashboard-top-bar">
       <div class="branding">
         <span class="brand-dot"></span>
-        <span class="brand-title">TANGIBLE SCHOOL BOARD</span>
+        <div class="brand-texts">
+          <span class="brand-title">TANGIBLE SCHOOL BOARD</span>
+          <span class="brand-subtitle">Digital Command Dashboard</span>
+        </div>
       </div>
       <div class="top-actions">
-        <!-- 今月＆今日のカレンダー位置にジャンプ -->
         <button id="calendarBtn" class="icon-btn">カレンダー</button>
         <button id="settingsBtn" class="icon-btn">設定</button>
       </div>
     </header>
 
-    <!-- 回転ずしメニューバー -->
+    <section class="overview-grid">
+      <article class="overview-card">
+        <div class="metric-label">総掲示数</div>
+        <div class="metric-value" id="metricTotalPosts">0</div>
+        <div class="metric-meta" id="metricTotalMeta">今週 0件追加</div>
+      </article>
+      <article class="overview-card">
+        <div class="metric-label">今日の掲示</div>
+        <div class="metric-value accent" id="metricTodayPosts">0</div>
+        <div class="metric-meta" id="metricTodayMeta">今日 0件</div>
+      </article>
+      <article class="overview-card">
+        <div class="metric-label">締切間近</div>
+        <div class="metric-value" id="metricExpiringPosts">0</div>
+        <div class="metric-meta" id="metricExpiringMeta">今後7日以内</div>
+      </article>
+      <article class="overview-card">
+        <div class="metric-label">稼働中カテゴリ</div>
+        <div class="metric-value" id="metricActiveCategories">0</div>
+        <div class="metric-meta" id="metricCategoryMeta">全4カテゴリ</div>
+      </article>
+    </section>
+
     <div class="ticker" id="ticker">
       <div class="ticker-track" id="tickerTrack"></div>
     </div>
 
-    <!-- メイン：左6 = ボード, 右4 = カレンダー -->
-    <main class="main-layout">
-      <!-- ボード -->
-      <section class="board" id="boardPanel">
-        <button id="prevBtn" class="nav-btn" aria-label="前のお知らせ">‹</button>
+    <main class="main-layout dashboard-main">
+      <div class="primary-column">
+        <section class="panel board-shell">
+          <div class="panel-header">
+            <div class="panel-heading">
+              <h2>掲示ボード</h2>
+              <p class="panel-subtext" id="boardContextLabel">全体の掲示を表示中</p>
+            </div>
+            <div class="panel-actions">
+              <button id="writeBtn" class="primary-btn board-primary" type="button">掲示する</button>
+            </div>
+          </div>
 
-        <div class="card-track" id="cardTrack">
-          <!-- メインカード -->
-          <article class="post-card" id="postCard">
-            <div class="post-header">
-              <div id="postCategoryPill" class="pill">全体</div>
-              <div id="postTarget" class="pill pill-secondary">全校生徒</div>
+          <nav class="category-bar">
+            <button class="category-chip active" data-category="all">全体</button>
+            <button class="category-chip" data-category="club">部活動</button>
+            <button class="category-chip" data-category="committee">委員会</button>
+            <button class="category-chip" data-category="grade">各学年</button>
+          </nav>
+
+          <section class="board" id="boardPanel">
+            <button id="prevBtn" class="nav-btn" aria-label="前のお知らせ">‹</button>
+
+            <div class="board-main">
+              <div class="card-track" id="cardTrack">
+                <article class="post-card" id="postCard">
+                  <div class="post-header">
+                    <div id="postCategoryPill" class="pill">全体</div>
+                    <div id="postTarget" class="pill pill-secondary">全校生徒</div>
+                  </div>
+
+                  <h1 id="postTitle" class="post-title">サンプルのお知らせ</h1>
+
+                  <div id="postMeta" class="post-meta"></div>
+
+                  <div class="post-body-wrapper">
+                    <p id="postBody" class="post-body">
+                      ようこそ！これはプロトタイプ用のサンプルです。
+                      左右フリックでお知らせをめくれます。
+                    </p>
+                    <p id="emptyMessage" class="empty-message" style="display:none;">
+                      このカテゴリにはまだお知らせがありません。<br>
+                      右上の「掲示する」から追加できます。
+                    </p>
+                  </div>
+
+                  <div class="post-footer">
+                    <span id="postIndexLabel" class="post-index">1 / 1</span>
+                    <span id="postTimeLabel" class="post-time"></span>
+                  </div>
+                </article>
+              </div>
+
+              <div class="board-support">
+                <div class="board-dots" id="boardDots" aria-label="掲示の位置インジケーター"></div>
+                <button type="button" class="next-peek" id="nextPeekBtn">
+                  <span class="next-label">次の掲示</span>
+                  <span class="next-title" id="nextPeekTitle">—</span>
+                  <span class="next-meta" id="nextPeekMeta">全体 ・ 全校</span>
+                </button>
+              </div>
             </div>
 
-            <h1 id="postTitle" class="post-title">サンプルのお知らせ</h1>
+            <button id="nextBtn" class="nav-btn" aria-label="次のお知らせ">›</button>
+          </section>
+        </section>
 
-            <div id="postMeta" class="post-meta"></div>
-
-            <div class="post-body-wrapper">
-              <p id="postBody" class="post-body">
-                ようこそ！これはプロトタイプ用のサンプルです。
-                左右フリックでお知らせをめくれます。
-              </p>
-              <p id="emptyMessage" class="empty-message" style="display:none;">
-                このカテゴリにはまだお知らせがありません。<br>
-                右下の「掲示する」や下フリックから追加できます。
-              </p>
+        <section class="panel recent-panel">
+          <div class="panel-header">
+            <div class="panel-heading">
+              <h3>最近の掲示</h3>
+              <p class="panel-subtext">最新5件まで表示</p>
             </div>
+          </div>
+          <ul class="insight-list" id="recentPostsList"></ul>
+          <p id="dashboardEmpty" class="panel-empty">掲示が登録されるとここに表示されます。</p>
+        </section>
+      </div>
 
-            <div class="post-footer">
-              <span id="postIndexLabel" class="post-index">1 / 1</span>
-              <span id="postTimeLabel" class="post-time"></span>
+      <aside class="secondary-column">
+        <section class="panel calendar-panel" id="calendarPanel">
+          <div class="calendar-header">
+            <div class="calendar-title-row">
+              <span class="calendar-label">月間カレンダー</span>
             </div>
-          </article>
-
-          <!-- 前のお知らせプレビュー -->
-          <article class="preview-card preview-prev" id="previewPrevCard">
-            <div class="preview-label">前のお知らせ</div>
-            <div class="preview-title" id="previewPrevTitle">—</div>
-          </article>
-
-          <!-- 次のお知らせプレビュー -->
-          <article class="preview-card preview-next" id="previewNextCard">
-            <div class="preview-label">次のお知らせ</div>
-            <div class="preview-title" id="previewNextTitle">—</div>
-          </article>
-        </div>
-
-        <button id="nextBtn" class="nav-btn" aria-label="次のお知らせ">›</button>
-      </section>
-
-      <!-- カレンダー 右4 -->
-      <aside class="calendar-panel" id="calendarPanel">
-        <div class="calendar-header">
-          <div class="calendar-title-row">
-            <span class="calendar-label">月間カレンダー</span>
+            <div class="calendar-month-row">
+              <button id="calendarPrevMonthBtn" class="icon-btn small">‹</button>
+              <div id="calendarMonthLabel" class="calendar-month-label">2025年4月</div>
+              <button id="calendarNextMonthBtn" class="icon-btn small">›</button>
+            </div>
           </div>
-          <div class="calendar-month-row">
-            <button id="calendarPrevMonthBtn" class="icon-btn small">‹</button>
-            <div id="calendarMonthLabel" class="calendar-month-label">2025年4月</div>
-            <button id="calendarNextMonthBtn" class="icon-btn small">›</button>
+
+          <div class="calendar-grid" id="calendarGrid">
+            <!-- JSで埋める -->
           </div>
-        </div>
 
-        <div class="calendar-grid" id="calendarGrid">
-          <!-- JSで埋める -->
-        </div>
-
-        <div class="calendar-events-area">
-          <div class="calendar-events-title">選択した日の掲示</div>
-          <div class="calendar-events-list" id="calendarEventsList">
-            <!-- JS -->
+          <div class="calendar-events-area">
+            <div class="calendar-events-title">選択した日の掲示</div>
+            <div class="calendar-events-list" id="calendarEventsList">
+              <!-- JS -->
+            </div>
           </div>
-        </div>
 
-        <button id="calendarAddPostBtn" class="calendar-add-btn">
-          選択した日に掲示を作る
-        </button>
+          <button id="calendarAddPostBtn" class="calendar-add-btn">
+            選択した日に掲示を作る
+          </button>
+        </section>
+
+        <section class="panel upcoming-panel">
+          <div class="panel-header">
+            <div class="panel-heading">
+              <h3>締切タイムライン</h3>
+              <p class="panel-subtext">表示期限の設定された掲示</p>
+            </div>
+          </div>
+          <ul class="insight-list compact" id="upcomingList"></ul>
+          <p class="panel-empty" id="upcomingEmpty">締切の設定された掲示はありません。</p>
+        </section>
+
+        <section class="panel breakdown-panel">
+          <div class="panel-header">
+            <div class="panel-heading">
+              <h3>カテゴリ内訳</h3>
+              <p class="panel-subtext">掲示数の割合</p>
+            </div>
+          </div>
+          <div class="category-breakdown" id="categoryBreakdown"></div>
+        </section>
       </aside>
     </main>
-
-    <!-- カテゴリ選択バー -->
-    <nav class="category-bar">
-      <button class="category-chip active" data-category="all">全体</button>
-      <button class="category-chip" data-category="club">部活動</button>
-      <button class="category-chip" data-category="committee">委員会</button>
-      <button class="category-chip" data-category="grade">各学年</button>
-    </nav>
-
-    <!-- 書くボタン -->
-    <button id="writeBtn" class="floating-btn">掲示する</button>
   </div>
 
   <!-- 5. ゴーストハンドのスワイプチュートリアル（初回のみ表示） -->

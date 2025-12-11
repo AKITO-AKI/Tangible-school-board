@@ -7,13 +7,13 @@
   <link rel="stylesheet" href="./common.css" />
   <style>
     :root {
-      --page-progress-bg: rgba(255, 255, 255, 0.16);
-      --page-progress-fill: #4f8dff;
+      --page-progress-bg: rgba(255, 255, 255, 0.12);
+      --page-progress-fill: var(--accent-page);
     }
     .main-centered {
-      max-width: 1100px;
+      max-width: 960px;
       margin: 0 auto;
-      padding: 0 2rem 4rem;
+      padding: 0 2rem 5rem;
     }
     .page-progress {
       position: fixed;
@@ -31,228 +31,193 @@
       width: 0%;
       height: 100%;
       border-radius: inherit;
-      background: linear-gradient(90deg, var(--page-progress-fill), #92b5ff);
-      transition: width 0.15s ease;
+      background: linear-gradient(90deg, var(--page-progress-fill), rgba(255, 255, 255, 0.65));
+      transition: width 0.2s ease;
     }
-    .hero-details {
-      list-style: none;
-      margin: 1rem 0 0;
-      padding: 0;
+    .article {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 0.5rem 1rem;
+      gap: 3rem;
+      padding: 4.5rem 0 0;
     }
-    .hero-details li {
-      position: relative;
-      padding-left: 1.3rem;
-      line-height: 1.6;
-    }
-    .hero-details li::before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: var(--page-progress-fill);
-    }
-    .hero-stats {
+    .article-header {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem;
-      margin-top: 1.5rem;
     }
-    .hero-stat {
-      padding: 1.25rem;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(6px);
+    .article-eyebrow {
+      font-size: 0.85rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: rgba(139, 50, 83, 0.6);
     }
-    .hero-stat label {
-      font-size: 0.78rem;
-      letter-spacing: 0.04em;
-      opacity: 0.75;
-      display: block;
+    .article-header h1 {
+      margin: 0;
+      font-size: clamp(2rem, 3vw, 2.6rem);
     }
-    .hero-stat strong {
-      display: block;
-      font-size: 1.35rem;
-      margin: 0.4rem 0;
+    .article-header p {
+      margin: 0;
+      line-height: 1.8;
+      color: rgba(120, 35, 68, 0.82);
     }
-    .hero-stat span {
-      font-size: 0.8rem;
-      opacity: 0.8;
-    }
-    .info-density {
-      background: linear-gradient(135deg, rgba(79, 141, 255, 0.08), rgba(255, 255, 255, 0));
-      border-radius: 24px;
-      padding: 2rem;
-      margin-top: 2rem;
-    }
-    .info-columns {
+    .article-section {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(214, 97, 142, 0.14);
+      border-radius: 22px;
+      padding: clamp(1.8rem, 3vw, 2.6rem);
+      box-shadow: 0 18px 40px rgba(214, 97, 142, 0.18);
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.25rem;
-      margin-top: 1.5rem;
+      gap: 1.6rem;
     }
-    .info-card {
-      padding: 1.5rem;
-      border-radius: 16px;
-      border: 1px solid rgba(0, 0, 0, 0.08);
-      background: #fff;
-      box-shadow: 0 12px 28px rgba(20, 34, 76, 0.08);
+    .article-section h2 {
+      margin: 0;
+      font-size: clamp(1.45rem, 2.4vw, 1.85rem);
+      color: var(--accent-page);
+    }
+    .article-section p {
+      margin: 0;
+      line-height: 1.8;
+      color: rgba(120, 35, 68, 0.82);
+    }
+    .article-section ul {
+      margin: 0;
+      padding-left: 1.1rem;
+      display: grid;
+      gap: 0.5rem;
+      color: rgba(120, 35, 68, 0.82);
+    }
+    .article-section time {
+      font-weight: 600;
+      color: rgba(120, 35, 68, 0.92);
+    }
+    .timeline-list { display: grid; gap: 1.4rem; }
+    .timeline-entry { display: grid; gap: 0.5rem; }
+    .timeline-entry h3 { margin: 0; font-size: 1.15rem; color: rgba(120, 35, 68, 0.92); }
+    @media (max-width: 720px) {
+      .main-centered { padding: 0 1.5rem 4rem; }
+      .article-section { border-radius: 18px; }
     }
   </style>
 </head>
 <body class="page-making">
+  <div class="page-loader" id="page-loader" role="status" aria-live="polite">
+    <div class="loader-shell">
+      <div class="loader-orbit" aria-hidden="true">
+        <div class="loader-pulse"></div>
+        <div class="loader-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <div class="loader-panel">
+        <p class="loader-panel-label">Now Loading</p>
+        <p class="loader-panel-title">Tangible School Board</p>
+        <p class="loader-panel-hint-label">ヒント</p>
+        <p class="loader-panel-hint" data-loader-hint>今日の校内連絡を整理しています…</p>
+      </div>
+    </div>
+  </div>
   <div class="page-progress" aria-hidden="true">
     <div class="page-progress-bar" id="pageProgressBar"></div>
   </div>
   <header class="header">
-    <nav class="nav">
-      <div class="brand"><span class="brand-dot"></span> TANGIBLE SCHOOL BOARD</div>
-      <div class="menu">
-        <a class="nav-link" href="./index.html">TOP</a>
-        <a class="nav-link" href="./features.html">機能紹介</a>
-        <a class="nav-link" href="./why.html">なぜ実装したのか</a>
-        <a class="nav-link" href="./tangible.html">タンジブルの意味</a>
-        <a class="nav-link" href="./roadmap.html">今後の発展</a>
-        <a class="nav-link" href="./making.html">作成時の苦労</a>
+    <nav class="nav" aria-label="グローバルナビゲーション">
+      <div class="brand"><span class="brand-dot" aria-hidden="true"></span> TANGIBLE SCHOOL BOARD</div>
+      <div class="menu" role="navigation" aria-label="ページナビ">
+        <a class="nav-link" href="./index.html" data-target="top">TOP</a>
+        <a class="nav-link" href="./features.html" data-target="features">機能紹介</a>
+        <a class="nav-link" href="./why.html" data-target="why">なぜ実装したのか</a>
+        <a class="nav-link" href="./tangible.html" data-target="tangible">タンジブルの意味</a>
+        <a class="nav-link" href="./roadmap.html" data-target="future">今後の発展</a>
+        <a class="nav-link" href="./making.html" data-target="story">作成時の苦労</a>
+        <a class="btn small demo-btn" href="../board.html" target="_blank" rel="noopener">デモをひらく</a>
       </div>
     </nav>
   </header>
 
   <main class="main-centered">
-    <!-- ファーストビュー：共通カードフレーム（1カラム） -->
-    <section class="section section-hero">
-      <div class="hero-shell">
-        <article class="hero-card hero-card--single">
-          <div class="hero-card-main">
-            <p class="hero-eyebrow">MAKING</p>
-            <h1 class="hero-title">迷って作って、また迷って整える。</h1>
-            <p class="hero-lead">スライド1枚のアイデアから、動くUIに育つまで。うまくいったことも、遠回りしたことも、そのまま記録しました。</p>
-            <ul class="hero-details">
-              <li>授業アンケート120件から「通知の見落とし」を抽出し、要件に翻訳。</li>
-              <li>紙モック→Figma→実機の3段階で“中央寄せ”の距離感を検証。</li>
-              <li>運用中の先生3名と週次で振り返り、UIの定量メモを残しました。</li>
-            </ul>
-            <div class="hero-actions">
-              <a class="btn primary" href="#timeline">制作のタイムラインへ</a>
-            </div>
-            <div class="hero-stats" role="list">
-              <div class="hero-stat" role="listitem">
-                <label>紙→デジタル移行</label>
-                <strong>38枚</strong>
-                <span>3週間で貼り替え完了</span>
-              </div>
-              <div class="hero-stat" role="listitem">
-                <label>UI試作回数</label>
-                <strong>11版</strong>
-                <span>カラーリングと密度の調整</span>
-              </div>
-              <div class="hero-stat" role="listitem">
-                <label>フィールドワーク</label>
-                <strong>26h</strong>
-                <span>登校・放課後の観察記録</span>
-              </div>
-            </div>
+    <article class="article">
+      <header class="article-header">
+        <p class="article-eyebrow">MAKING</p>
+        <h1>迷って作って、また迷って整える</h1>
+        <p>スライド1枚のアイデアから動くUIに育つまで。うまくいったことも遠回りしたことも、そのまま記録しました。</p>
+      </header>
+
+      <section class="article-section">
+        <h2>プロジェクトのタイムライン（2025年8月〜12月）</h2>
+        <p>ざっくりとした「出来事の量」で、プロジェクトのリアルさを残したタイムラインです。高校生として勉強や行事と並行しながら進めたので、悩んだり止まったりを含めてそのまま書いています。</p>
+        <div class="timeline-list">
+          <div class="timeline-entry">
+            <h3><time datetime="2025-08">2025年8月上旬</time>　「掲示板って、もう限界じゃない？」と気づく</h3>
+            <p>終業式の前後、昇降口の掲示板にプリントが何重にも重なっているのを見て、「誰も読んでいないのでは？」と違和感を覚える。同じ行事の案内が、プリント・掲示板・先生の口頭連絡で三重に配られている状況にモヤモヤする。</p>
           </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- 縦タイムライン -->
-  <section id="timeline" class="section">
-      <div class="container">
-        <div class="timeline">
-          <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-content"><h4>Ver.0（アイデア）</h4><p>授業スライドから着想、要件の言語化。</p></div></div>
-          <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-content"><h4>Ver.1（紙プロト）</h4><p>画面遷移と情報の置き場所を試作。</p></div></div>
-          <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-content"><h4>Ver.2（ダークUI）</h4><p>視認性・疲労感の点で白基調へ転換。</p></div></div>
-          <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-content"><h4>Ver.3（ホワイト）</h4><p>カレンダー統合、プレビューの配置調整。</p></div></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ギャラリー（プレースホルダ） -->
-    <section class="section">
-      <div class="container">
-        <h2>スクショギャラリー（抜粋）</h2>
-        <div class="card-grid three">
-          <div class="card reveal"><h3>カテゴリ切替</h3><p>色は控えめ、記号的に。</p></div>
-          <div class="card reveal"><h3>カレンダー連動</h3><p>対象日が光る導線。</p></div>
-          <div class="card reveal"><h3>投稿シート</h3><p>すぐ書けて、すぐ反映。</p></div>
-        </div>
-        <p class="subtle" style="margin-top:10px;">※ クリックで拡大予定（後日）。</p>
-      </div>
-    </section>
-    <!-- 8. どこに置く？ ミニ質問 -->
-    <section id="placement" class="section placement">
-      <div class="container">
-        <header class="section-header">
-          <h2>あなたの学校なら、どこに置きますか？</h2>
-          <p>設置場所によって、助かる人も変わります。</p>
-        </header>
-
-        <div class="placement-inner">
-          <div class="placement-choices" role="radiogroup">
-            <button class="placement-option" data-place="entrance">昇降口</button>
-            <button class="placement-option" data-place="stair">階段ホール</button>
-            <button class="placement-option" data-place="office">職員室前</button>
-            <button class="placement-option" data-place="other">その他</button>
+          <div class="timeline-entry">
+            <h3><time datetime="2025-08">2025年8月中旬</time>　「一枚にまとめられないか」という漠然としたアイデア</h3>
+            <p>友だちとの会話で、「全部の連絡が一枚のボードにまとまっていたら楽だよね」という話題になる。この時点ではまだ、紙の掲示板を工夫するくらいのイメージだった。</p>
           </div>
-
-          <div class="placement-visual">
-            <img src="assets/place-entrance.png" alt="" data-placement-image>
-            <p class="placement-caption" data-placement-caption>昇降口に置けば、登校と下校のたびに自然と目に入ります。</p>
+          <div class="timeline-entry">
+            <h3><time datetime="2025-08">2025年8月下旬</time>　デジタルサイネージの存在を知る</h3>
+            <p>商業施設や駅で使われているデジタルサイネージについて調べる。「かっこいいけれど、学校の連絡をそのまま流すだけではきっと見られない」と感じ、学校に特化したUIが必要だと気づく。</p>
+          </div>
+          <div class="timeline-entry">
+            <h3><time datetime="2025-09">2025年9月上旬</time>　ワイヤーフレーム第1案を作る</h3>
+            <p>ノートに手書きで「カードが3列並んだ掲示ボード」のラフを描く。情報量を詰め込みすぎて、すぐに「これだと逆に読まれない」と反省する。</p>
+          </div>
+          <div class="timeline-entry">
+            <h3><time datetime="2025-09">2025年9月中旬</time>　余白の重要性にぶつかる</h3>
+            <p>Apple のサイトを参考にしながら「余白を広く取っても情報は伝わるのか？」を検証。真似してみても、自分が作るとどこか窮屈で高級感が出ない。行間・フォント・カード間の距離を何度も調整し、「情報を減らす勇気」を少しずつ身につける。</p>
+          </div>
+          <div class="timeline-entry">
+            <h3><time datetime="2025-09">2025年9月下旬</time>　色分けの設計で迷走する</h3>
+            <p>カテゴリごとに色分けしようとするが、派手すぎると安っぽくなり、地味すぎると区別できないジレンマにはまる。背景は落ち着かせ、アクセントカラーだけを変える方向に落ち着くまで何パターンも試作する。</p>
+          </div>
+          <div class="timeline-entry">
+            <h3><time datetime="2025-10">2025年10月上旬</time>　初めてのプロトタイプ実装</h3>
+            <p>HTML/CSSで簡単なボードを組み立て、ダミーのカードを並べて表示。PCではそれなりに見えるが、65インチ相当で想像すると文字が小さすぎることに気づき、「教室の後ろから読めるか？」の観点でフォントサイズを見直す。</p>
+          </div>
+          <div class="timeline-entry">
+            <h3><time datetime="2025-10">2025年10月中旬</time>　スクロールか、ページ送りかで悩む</h3>
+            <p>縦スクロールと横スライドのどちらが良いかで数日悩む。遠くから見ている人にはスクロール途中が見えないことを理由に、1画面の中でカードを切り替える方向へ傾く。</p>
+          </div>
+          <div class="timeline-entry">
+            <h3><time datetime="2025-10">2025年10月下旬</time>　カレンダーの導入でレイアウトが崩壊</h3>
+            <p>右側に月カレンダーを入れようとしてバランスが崩れ、カード部分が窮屈に。「ボードの目的は何か？」に立ち返り、カードの読みやすさを最優先に位置づけを整理し直す。</p>
+          </div>
+          <div class="timeline-entry">
+            <h3><time datetime="2025-11">2025年11月上旬</time>　先生に初めて見せてみる</h3>
+            <p>プロトタイプを担任の先生に見せ、感想を聞く。「面白いけど誰が更新するのか」「保護者向け情報も載せたい」など現実的な課題が一気に出て、運用の役割分担を考える必要を実感する。</p>
+          </div>
+          <div class="timeline-entry">
+            <h3><time datetime="2025-11">2025年11月中旬</time>　更新フローの案を紙に書き出す</h3>
+            <p>先生・生徒会・部活動顧問など、誰がどのタイミングで情報を入れるのかを図にして整理。その過程で「ボードが増えるときのルール」も必要だと気づき、学年別ボードや特別教室前ボードの構想につながる。</p>
+          </div>
+          <div class="timeline-entry">
+            <h3><time datetime="2025-11">2025年11月下旬</time>　UI全体を作り直す決意</h3>
+            <p>ページ構成が増えるにつれデザインがバラバラになっていると気づき、トップページのヒーローセクションや共通コンポーネントを作り直す。「Appleっぽく、でも自分たちらしい」統一感を目指して再構築する。</p>
+          </div>
+          <div class="timeline-entry">
+            <h3><time datetime="2025-12">2025年12月上旬</time>　「なぜ作るのか」を言語化する難しさ</h3>
+            <p>機能が形になってきた段階で紹介ページの文章を書き始めるが、思っていることを言葉にするのが想像以上に難しい。「かっこいい説明」と「正直な気持ち」の間で揺れ、友だちや家族に読んでもらってフィードバックを受ける。</p>
+          </div>
+          <div class="timeline-entry">
+            <h3><time datetime="2025-12">2025年12月中旬</time>　実際の学校の風景を思い出しながら文章を修正</h3>
+            <p>昇降口の混雑、プリントの山、行事前のバタバタした雰囲気など具体的な光景を思い出しながら、「なぜこのボードが必要だと思ったのか」を文章に落とし込む。機能説明だけでなく、自分の本音を書くことを意識する。</p>
+          </div>
+          <div class="timeline-entry">
+            <h3><time datetime="2025-12">2025年12月下旬</time>　全体のつながりを整えて開発終了</h3>
+            <p>トップページ、機能紹介、なぜ実装したのか、タンジブルの意味、今後の発展、作成時の苦労が一本のストーリーとしてつながるように見出しや導入文を整える。「高校一年生だったとしても読み切れるか？」を基準に最終チェックを行い、第一版としての開発を完了。</p>
           </div>
         </div>
-      </div>
-    </section>
-    <div class="info-density">
-      <h3>中央寄せUIに切り替えた理由</h3>
-      <p>掲示板と廊下のセンターラインを揃えることで、立ち止まったまま身体をひねらず全体を読める距離を作りました。紙掲示と同じ高さに要点を置くことで“探さなくていい”体験に寄せています。</p>
-      <div class="info-columns">
-        <div class="info-card">
-          <h4>導線の実測</h4>
-          <p>ビデオ計測で生徒の歩幅平均62cmを基準にし、片側通行時も2ステップ以内で画面中央に入れる配置を決定。</p>
-        </div>
-        <div class="info-card">
-          <h4>情報レイヤー</h4>
-          <p>カード→サマリー→カレンダーの3層を縦方向に固定し、文字量を40〜60字に統一。目線の上下幅を32cmに制御。</p>
-        </div>
-        <div class="info-card">
-          <h4>心理的な余裕</h4>
-          <p>通知を“取りに行く”姿勢を保つため、あえて中央に寄せ、踏み込んだ瞬間に光量と情報が増える演出を入れています。</p>
-        </div>
-      </div>
-    </div>
+      </section>
+
+      <section class="article-section">
+        <h2>書き手としてのメモ</h2>
+        <p>「WEBとして読ませるコンテンツ」と「高校生としてのリアルな視点」を両方意識して書いています。記事やパネルの文章としてそのまま使えるよう、感情を込めすぎず、でも現場の空気が伝わる温度感を大切にしました。</p>
+        <p>読み手が迷わないように時系列と感情の揺れ幅をそろえ、最後まで読んだときに「このプロジェクトにはまだ続きがある」と感じてもらえる構成を心がけています。</p>
+      </section>
+    </article>
   </main>
   <footer class="footer"><div class="container">© 2025 Tangible School Board</div></footer>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const bar = document.getElementById('pageProgressBar');
-      if (!bar) return;
-
-      const calcProgress = () => {
-        const doc = document.documentElement;
-        const scrollTop = doc.scrollTop || document.body.scrollTop;
-        const scrollable = doc.scrollHeight - doc.clientHeight;
-        const ratio = scrollable <= 0 ? 0 : scrollTop / scrollable;
-        bar.style.width = `${Math.min(100, Math.max(0, ratio * 100))}%`;
-      };
-
-      let rafId = null;
-      const queueUpdate = () => {
-        if (rafId) return;
-        rafId = requestAnimationFrame(() => {
-          calcProgress();
-          rafId = null;
-        });
-      };
-
-      calcProgress();
-      window.addEventListener('scroll', queueUpdate, { passive: true });
-      window.addEventListener('resize', queueUpdate);
-    });
-  </script>
   <script src="./common.js" defer></script>
 </body>
 </html>
