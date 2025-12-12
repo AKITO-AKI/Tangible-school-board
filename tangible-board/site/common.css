@@ -569,6 +569,13 @@ html.is-loaded .page-loader {
 .footer { border-top: 1px solid var(--border); color: var(--text-muted); }
 .footer .container { padding-top: 24px; padding-bottom: 24px; font-size: 13px; }
 
+/* Shared badges for personal board */
+.badge { display:inline-block; font-size:0.78rem; font-weight:700; padding:0.2rem 0.5rem; border-radius:999px; }
+.badge-soon { background: rgba(255,190,0,0.15); color: #7a5a00; border: 1px solid rgba(255,190,0,0.4); }
+.badge-overdue { background: rgba(200,0,0,0.15); color: #7a0000; border: 1px solid rgba(200,0,0,0.4); }
+.is-due-soon { border-color: rgba(255,190,0,0.55) !important; box-shadow: 0 8px 20px rgba(255,190,0,0.22) !important; }
+.is-overdue { border-color: rgba(200,0,0,0.55) !important; box-shadow: 0 8px 20px rgba(200,0,0,0.22) !important; }
+
 /* 現在地バー */
 .nowbar { position: sticky; bottom: 0; z-index: 10; backdrop-filter: blur(8px); background: rgba(255,255,255,.85); border-top: 1px solid var(--border); }
 .nowbar .inner { max-width: 1120px; margin: 0 auto; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; gap: 8px; }

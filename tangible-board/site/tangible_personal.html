@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>パーソナルの考え方 | TANGIBLE SCHOOL BOARD</title>
+  <link rel="stylesheet" href="./common.css" />
+  <style>
+    .personal-grid { display: grid; gap: 1.2rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+    .panel { background: rgba(255,255,255,0.95); border: 1px solid rgba(15,23,42,0.08); border-radius: 16px; box-shadow: 0 12px 28px rgba(15,23,42,0.12); padding: 1rem; display: grid; gap: 0.8rem; }
+    .panel header { display: flex; justify-content: space-between; align-items: center; }
+    .panel header h2 { margin: 0; font-size: 1.2rem; color: var(--accent-page); }
+    .item { border: 1px solid rgba(15,23,42,0.12); border-radius: 12px; padding: 0.7rem 0.8rem; background: #fff; display: grid; gap: 0.35rem; }
+    .item-title { font-weight: 600; }
+    .item-meta { font-size: 0.85rem; opacity: 0.75; }
+    .actions { display: flex; gap: 0.4rem; }
+    .actions button { padding: 0.35rem 0.7rem; border-radius: 999px; border: 1px solid rgba(15,23,42,0.2); background: rgba(15,23,42,0.06); cursor: pointer; }
+    .quick-form { display: grid; gap: 0.6rem; }
+    .quick-form input, .quick-form textarea, .quick-form select { font: inherit; padding: 0.5rem; border-radius: 10px; border: 1px solid rgba(15,23,42,0.2); }
+    .quick-form button { justify-self: start; padding: 0.5rem 1rem; border-radius: 999px; border: none; background: var(--accent-page); color: #fff; font-weight: 600; cursor: pointer; }
+    .empty { color: rgba(15,23,42,0.6); font-size: 0.92rem; }
+  </style>
+</head>
+<body class="page-personal">
+  <div class="page-loader" id="page-loader" role="status" aria-live="polite">
+    <div class="loader-shell">
+      <div class="loader-orbit" aria-hidden="true">
+        <div class="loader-pulse"></div>
+        <div class="loader-dots"><span></span><span></span><span></span><span></span></div>
+      </div>
+      <div class="loader-panel">
+        <p class="loader-panel-label">Now Loading</p>
+        <p class="loader-panel-title">Tangible School Board</p>
+        <p class="loader-panel-hint-label">ヒント</p>
+        <p class="loader-panel-hint" data-loader-hint>自分だけの掲示・メモを準備中…</p>
+      </div>
+    </div>
+  </div>
+
+  <header class="header">
+    <nav class="nav" aria-label="グローバルナビゲーション">
+      <div class="brand"><span class="brand-dot" aria-hidden="true"></span> TANGIBLE SCHOOL BOARD</div>
+      <div class="menu" role="navigation" aria-label="ページナビ">
+        <a class="nav-link" href="./index.html" data-target="top">TOP</a>
+        <a class="nav-link" href="./features.html" data-target="features">機能紹介</a>
+        <a class="nav-link" href="./roadmap.html" data-target="future">今後の発展</a>
+        <a class="btn small demo-btn" href="../board.html" target="_blank" rel="noopener">デモをひらく</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="main-centered">
+    <article class="article" style="padding-top: 2rem; gap: 1.8rem;">
+      <header class="article-header">
+        <p class="article-eyebrow">PERSONAL</p>
+        <h1>“僕のための一枚”をつくる理由</h1>
+        <p>掲示ボードの思想をそのまま個人へ。学校の情報の受け取り方を練習するための、個人用の「掲示板・メモ帳・リマインダー」です。このページでは考え方を説明し、最後に軽いデモを置いています。</p>
+      </header>
+
+      <section class="panel" aria-label="考え方">
+        <header><h2>なぜ個人にも“ボード”が必要か</h2></header>
+        <div class="item"><p>紙のプリントとスマホの通知の間で、情報の優先度が曖昧になりがちです。個人用ボードは「自分で近づいて確認する」行為を保ったまま、今日・今週・期限の見通しをひと目で整えます。</p></div>
+        <div class="item"><p>学校の掲示と同じカード設計を使うことで、校内ボードと個人ボードの往復がスムーズになり、「読み方」を共通化できます。</p></div>
+      </section>
+
+      <section class="panel" aria-label="デモと入口">
+        <header><h2>デモと編集</h2></header>
+        <div class="item">
+          <p>個人ボードの閲覧デモ（キオスク表示）はこちらから。</p>
+          <div class="actions">
+            <a class="btn small demo-btn" href="../board_personal.html" target="_blank" rel="noopener">個人ボードのデモを見る</a>
+          </div>
+        </div>
+        <div class="item">
+          <p>データの追加・編集は以下の簡易フォームから行えます。ブラウザに保存され、他のページでも自動反映されます。</p>
+        </div>
+      </section>
+
+      <section class="personal-grid" aria-label="クイック編集フォーム">
+        <div class="panel" id="panel-quick">
+          <header>
+            <h2>クイック追加</h2>
+          </header>
+          <form class="quick-form" id="quickForm" aria-label="クイック追加フォーム">
+            <label>タイプ
+              <select name="type" aria-label="タイプ">
+                <option value="note">メモ</option>
+                <option value="reminder">リマインダー</option>
+              </select>
+            </label>
+            <label>タイトル
+              <input name="title" type="text" placeholder="タイトル" required />
+            </label>
+            <label>本文
+              <textarea name="body" rows="3" placeholder="内容（任意）"></textarea>
+            </label>
+            <label>期限（リマインダーのみ）
+              <input name="due" type="datetime-local" />
+            </label>
+            <button type="submit">追加</button>
+          </form>
+        </div>
+
+        <div class="panel" id="panel-notes">
+          <header>
+            <h2>メモ（一覧）</h2>
+            <div class="actions">
+              <button type="button" data-notes-clear>全削除</button>
+            </div>
+          </header>
+          <div id="notesList" role="list" aria-live="polite"><p class="empty">まだメモがありません。</p></div>
+        </div>
+
+        <div class="panel" id="panel-reminders">
+          <header>
+            <h2>リマインダー（一覧）</h2>
+            <div class="actions">
+              <button type="button" data-reminders-clear>全削除</button>
+            </div>
+          </header>
+          <div id="remindersList" role="list" aria-live="polite"><p class="empty">まだリマインダーがありません。</p></div>
+        </div>
+
+        <div class="panel" id="panel-settings">
+          <header>
+            <h2>設定</h2>
+          </header>
+          <div class="item">
+            <div class="actions">
+              <button type="button" id="exportBtn">データを書き出す</button>
+              <button type="button" id="importBtn">データを読み込む</button>
+              <button type="button" id="resetBtn">すべて初期化</button>
+            </div>
+            <p class="item-meta">ローカル保存：ブラウザのストレージに自動保存（他ページのデモにも反映）。</p>
+          </div>
+        </div>
+      </section>
+    </article>
+  </main>
+
+  <footer class="footer"><div class="container">© 2025 Tangible School Board</div></footer>
+  <script src="./common.js" defer></script>
+  <script src="./personal.js" defer></script>
+</body>
+</html>

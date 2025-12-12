@@ -86,6 +86,218 @@
     }
     .article-subsection { display: grid; gap: 0.75rem; }
     .article-subsection h3 { margin: 0; font-size: 1.15rem; color: rgba(15, 76, 95, 0.9); }
+    .future-feature-list {
+      display: grid;
+      gap: 2rem;
+    }
+    .future-feature {
+      display: grid;
+      gap: 1.4rem;
+      padding: clamp(1.4rem, 3vw, 1.8rem);
+      border: 1px solid rgba(45, 142, 172, 0.18);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.92);
+      box-shadow: 0 12px 28px rgba(45, 142, 172, 0.12);
+    }
+    .future-feature header {
+      display: grid;
+      gap: 0.4rem;
+    }
+    .future-feature header h3 {
+      margin: 0;
+      font-size: 1.2rem;
+      color: rgba(15, 76, 95, 0.92);
+    }
+    .feature-demo {
+      display: grid;
+      gap: 0.8rem;
+      padding: 1.1rem;
+      border-radius: 14px;
+      background: rgba(231, 248, 252, 0.85);
+      border: 1px solid rgba(45, 142, 172, 0.22);
+    }
+    .demo-board {
+      display: grid;
+      gap: 0.6rem;
+    }
+    .demo-card {
+      padding: 0.85rem 1rem;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid rgba(15, 76, 95, 0.18);
+      box-shadow: 0 6px 14px rgba(15, 76, 95, 0.12);
+      display: grid;
+      gap: 0.35rem;
+    }
+    .demo-card h4 {
+      margin: 0;
+      font-size: 1.05rem;
+      color: rgba(15, 76, 95, 0.92);
+    }
+    .demo-card p {
+      margin: 0;
+      line-height: 1.4;
+      color: rgba(15, 76, 95, 0.78);
+    }
+    .demo-tag {
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+      color: rgba(45, 142, 172, 0.9);
+      text-transform: uppercase;
+    }
+    .share-targets {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 0.5rem;
+    }
+    .share-targets label {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.4rem;
+      align-items: center;
+      padding: 0.45rem 0.6rem;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.86);
+      border: 1px solid rgba(45, 142, 172, 0.18);
+      font-size: 0.9rem;
+    }
+    .feature-demo button,
+    .feature-demo select,
+    .feature-demo input[type="range"] {
+      font: inherit;
+    }
+    .feature-demo button {
+      justify-self: start;
+      padding: 0.5rem 1.1rem;
+      border-radius: 999px;
+      border: none;
+      background: rgba(45, 142, 172, 0.85);
+      color: #fff;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .feature-demo button:hover {
+      background: rgba(15, 76, 95, 0.9);
+    }
+    .feature-status {
+      font-size: 0.85rem;
+      color: rgba(15, 76, 95, 0.72);
+    }
+    [data-distance-preview] {
+      --distance-scale: 1;
+      --distance-gap: 0.35rem;
+    }
+    [data-distance-preview] .demo-card {
+      transform-origin: top left;
+      transform: scale(var(--distance-scale));
+    }
+    [data-distance-preview] .demo-card + .demo-card {
+      margin-top: var(--distance-gap);
+    }
+    .distance-scale-note {
+      font-size: 0.82rem;
+      color: rgba(15, 76, 95, 0.7);
+    }
+    .accessibility-demo {
+      display: grid;
+      gap: 0.7rem;
+    }
+    .accessibility-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+    .accessibility-controls button {
+      background: rgba(15, 76, 95, 0.08);
+      color: rgba(15, 76, 95, 0.85);
+      border: 1px solid rgba(15, 76, 95, 0.22);
+    }
+    .accessibility-controls button[aria-pressed="true"] {
+      background: rgba(15, 76, 95, 0.9);
+      color: #fff;
+    }
+    .accessibility-preview {
+      padding: 0.9rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(15, 76, 95, 0.18);
+      background: #fff;
+      display: grid;
+      gap: 0.45rem;
+      position: relative;
+    }
+    .accessibility-preview.is-contrast {
+      background: #0f4c5f;
+      color: #f1fbff;
+      border-color: #0f4c5f;
+    }
+    .accessibility-preview.is-contrast .demo-tag {
+      color: #bbf2ff;
+    }
+    .accessibility-preview.is-speaking::after {
+      content: "読み上げ中...";
+      position: absolute;
+      bottom: 0.6rem;
+      right: 0.8rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: inherit;
+      animation: pulse 1s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+    .alert-overlay {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      background: rgba(10, 28, 38, 0.68);
+      backdrop-filter: blur(6px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 9999;
+    }
+    .alert-overlay.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .alert-panel {
+      max-width: 420px;
+      background: #fff;
+      border-radius: 18px;
+      padding: 1.8rem;
+      display: grid;
+      gap: 1rem;
+      text-align: center;
+      box-shadow: 0 24px 65px rgba(10, 28, 38, 0.35);
+    }
+    .alert-panel h4 {
+      margin: 0;
+      font-size: 1.35rem;
+      color: rgba(178, 22, 57, 0.95);
+    }
+    .alert-panel p {
+      margin: 0;
+      color: rgba(10, 28, 38, 0.76);
+      line-height: 1.6;
+    }
+    .alert-panel button {
+      justify-self: center;
+      background: rgba(178, 22, 57, 0.9);
+    }
+    @media (min-width: 820px) {
+      .future-feature {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        align-items: center;
+      }
+      .feature-demo {
+        min-height: 200px;
+      }
+    }
     @media (max-width: 720px) {
       .main-centered { padding: 0 1.5rem 4rem; }
       .article-section { border-radius: 18px; }
@@ -125,6 +337,8 @@
         <a class="nav-link" href="./tangible.html" data-target="tangible">タンジブルの意味</a>
         <a class="nav-link" href="./roadmap.html" data-target="future">今後の発展</a>
         <a class="nav-link" href="./making.html" data-target="story">作成時の苦労</a>
+        <a class="nav-link" href="./tangible_personal.html" data-target="personal">パーソナル説明</a>
+        <a class="nav-link" href="../board_personal.html" data-target="personal-board">パーソナルデモ</a>
         <a class="btn small demo-btn" href="../board.html" target="_blank" rel="noopener">デモをひらく</a>
       </div>
     </nav>
@@ -189,12 +403,86 @@
       <section class="article-section">
         <h2>これから実装していきたい機能案</h2>
         <p>より多くの場所で活躍させるために、次のような機能を構想しています。</p>
-        <ul>
-          <li>複数ボード間で同じカードを共有できる「共有チャンネル」機能。</li>
-          <li>利用環境に合わせてレイアウトやフォントサイズを自動調整する「距離モード」。</li>
-          <li>音声読み上げやコントラスト調整など、アクセシビリティに配慮した表示モード。</li>
-          <li>緊急時にすべてのボードを同じ警告画面へ切り替える「一斉アラート」機能。</li>
-        </ul>
+        <div class="future-feature-list">
+          <article class="future-feature" id="feature-shared-channel">
+            <header>
+              <h3>共有チャンネル</h3>
+              <p>複数ボードで同じカードを扱うとき、更新者は一度の入力で各拠点に配信できます。イベントや緊急連絡を校内全域へ一瞬で届ける想定です。</p>
+            </header>
+            <div class="feature-demo" aria-label="共有チャンネルのデモ">
+              <form id="channelShareForm">
+                <label for="channelSelect">共有元チャンネル</label>
+                <select id="channelSelect" name="channel">
+                  <option value="all">全校アナウンス</option>
+                  <option value="sports">運動部チャンネル</option>
+                  <option value="cultural">文化部チャンネル</option>
+                </select>
+                <div class="share-targets" role="group" aria-label="共有先ボード">
+                  <label><input type="checkbox" name="share-target" value="entrance">昇降口ボード</label>
+                  <label><input type="checkbox" name="share-target" value="floor-2">2年フロア</label>
+                  <label><input type="checkbox" name="share-target" value="gym">体育館前</label>
+                  <label><input type="checkbox" name="share-target" value="special">特別教室前</label>
+                </div>
+                <button type="submit">カードを配信</button>
+              </form>
+              <p class="feature-status" id="channelShareStatus">共有先を選ぶとデモが動きます。</p>
+            </div>
+          </article>
+
+          <article class="future-feature" id="feature-distance-mode">
+            <header>
+              <h3>距離モード</h3>
+              <p>ボードからの距離や設置環境を検知して、文字サイズ・余白・レイヤーの見せ方を最適化します。遠くからは大きく、近づくと詳細が開く構造です。</p>
+            </header>
+            <div class="feature-demo" aria-label="距離モードのデモ">
+              <label for="distanceModeRange">距離センサーの想定値</label>
+              <input type="range" id="distanceModeRange" min="0" max="100" value="60">
+              <span class="distance-scale-note" id="distanceModeLabel">約2.4m：カードが大きく表示されます。</span>
+              <div class="demo-board" data-distance-preview>
+                <div class="demo-card">
+                  <span class="demo-tag">全校</span>
+                  <h4>朝会 延長のお知らせ</h4>
+                  <p>集合：8:25 HR 教室前</p>
+                </div>
+                <div class="demo-card">
+                  <span class="demo-tag">部活</span>
+                  <h4>陸上部 ミーティング</h4>
+                  <p>放課後 図書室横に集合</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article class="future-feature" id="feature-accessibility">
+            <header>
+              <h3>アクセシビリティ表示</h3>
+              <p>読み上げやハイコントラストなど、見る人の状態に合わせたモードをワンタップで呼び出せるようにします。</p>
+            </header>
+            <div class="feature-demo accessibility-demo" aria-label="アクセシビリティ機能のデモ" data-accessibility-demo>
+              <div class="accessibility-controls">
+                <button type="button" data-contrast-toggle aria-pressed="false">ハイコントラスト</button>
+                <button type="button" data-voice-toggle aria-pressed="false">音声読み上げ</button>
+              </div>
+              <div class="accessibility-preview" role="region" aria-live="polite">
+                <span class="demo-tag">委員会</span>
+                <h4>図書委員 会議日程</h4>
+                <p>12/18（水） 放課後 図書室集合</p>
+                <p class="feature-status" data-voice-status>ボタンで読み上げを体験。</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="future-feature" id="feature-alert">
+            <header>
+              <h3>一斉アラート</h3>
+              <p>緊急時は校内すべてのボードが同じ警告画面へ切り替わり、避難経路や速報を明示します。</p>
+            </header>
+            <div class="feature-demo" aria-label="一斉アラートのデモ">
+              <button type="button" id="alertTriggerButton">一斉アラートを送信</button>
+              <p class="feature-status" id="alertStatus">アラートを送ると専用画面が点灯します。</p>
+            </div>
+          </article>
+        </div>
         <p>高校生だけでは一度に全てを実装できませんが、理想像を頭に置きながら、今できることから形にしていきます。</p>
       </section>
 
@@ -213,5 +501,118 @@
 
   <footer class="footer"><div class="container">© 2025 Tangible School Board</div></footer>
   <script src="./common.js" defer></script>
+  <div class="alert-overlay" data-alert-overlay aria-hidden="true">
+    <div class="alert-panel" role="alertdialog" aria-labelledby="alertHeadline" aria-describedby="alertDescription">
+      <h4 id="alertHeadline">避難勧告</h4>
+      <p id="alertDescription">理科室で煙が発生。教員の指示に従って昇降口へ速やかに移動してください。</p>
+      <button type="button" data-alert-close>閉じる</button>
+    </div>
+  </div>
+  <script>
+  document.addEventListener('DOMContentLoaded', function(){
+    const shareForm = document.getElementById('channelShareForm');
+    if (shareForm){
+      const status = document.getElementById('channelShareStatus');
+      shareForm.addEventListener('submit', function(evt){
+        evt.preventDefault();
+        const channel = shareForm.channel.value;
+        const targets = Array.from(shareForm.querySelectorAll('input[name="share-target"]:checked')).map((el) => el.nextSibling ? el.nextSibling.textContent.trim() : el.value);
+        if (!targets.length){
+          status.textContent = '共有先を選んでください。';
+          return;
+        }
+        const channelLabel = shareForm.channel.options[shareForm.channel.selectedIndex].textContent.trim();
+        status.textContent = `${channelLabel} を ${targets.join('、')} へ配信しました。`;
+      });
+    }
+
+    const distanceRange = document.getElementById('distanceModeRange');
+    const distancePreview = document.querySelector('[data-distance-preview]');
+    const distanceLabel = document.getElementById('distanceModeLabel');
+    if (distanceRange && distancePreview && distanceLabel){
+      const updateDistanceDemo = () => {
+        const value = Number(distanceRange.value);
+        const scale = 0.85 + (value / 100) * 0.5;
+        const gap = `${0.2 + (1 - value / 100) * 0.6}rem`;
+        distancePreview.style.setProperty('--distance-scale', scale.toFixed(2));
+        distancePreview.style.setProperty('--distance-gap', gap);
+        if (value >= 70){
+          distanceLabel.textContent = '約3m：遠距離のため見出しを最大化。';
+        } else if (value >= 40){
+          distanceLabel.textContent = '約2m：標準表示で本文と見出しを両立。';
+        } else {
+          distanceLabel.textContent = '約1m：近距離想定で詳細にフォーカス。';
+        }
+      };
+      updateDistanceDemo();
+      distanceRange.addEventListener('input', updateDistanceDemo);
+    }
+
+    const accessibilityDemo = document.querySelector('[data-accessibility-demo]');
+    if (accessibilityDemo){
+      const contrastBtn = accessibilityDemo.querySelector('[data-contrast-toggle]');
+      const voiceBtn = accessibilityDemo.querySelector('[data-voice-toggle]');
+      const preview = accessibilityDemo.querySelector('.accessibility-preview');
+      const voiceStatus = accessibilityDemo.querySelector('[data-voice-status]');
+      if (contrastBtn && preview){
+        contrastBtn.addEventListener('click', () => {
+          const pressed = contrastBtn.getAttribute('aria-pressed') === 'true';
+          const nextState = !pressed;
+          contrastBtn.setAttribute('aria-pressed', String(nextState));
+          preview.classList.toggle('is-contrast', nextState);
+        });
+      }
+      if (voiceBtn && preview && voiceStatus){
+        let speakTimer;
+        voiceBtn.addEventListener('click', () => {
+          const inProgress = voiceBtn.getAttribute('aria-pressed') === 'true';
+          if (inProgress){
+            clearTimeout(speakTimer);
+            preview.classList.remove('is-speaking');
+            voiceBtn.setAttribute('aria-pressed', 'false');
+            voiceStatus.textContent = '読み上げを停止しました。';
+            return;
+          }
+          voiceBtn.setAttribute('aria-pressed', 'true');
+          preview.classList.add('is-speaking');
+          voiceStatus.textContent = '音声が案内を読み上げています。';
+          speakTimer = window.setTimeout(() => {
+            preview.classList.remove('is-speaking');
+            voiceBtn.setAttribute('aria-pressed', 'false');
+            voiceStatus.textContent = '読み上げが完了しました。';
+          }, 2200);
+        });
+      }
+    }
+
+    const alertButton = document.getElementById('alertTriggerButton');
+    const alertOverlay = document.querySelector('[data-alert-overlay]');
+    const alertClose = document.querySelector('[data-alert-close]');
+    const alertStatus = document.getElementById('alertStatus');
+    if (alertButton && alertOverlay){
+      const toggleOverlay = (show) => {
+        alertOverlay.classList.toggle('is-visible', show);
+        alertOverlay.setAttribute('aria-hidden', show ? 'false' : 'true');
+        if (alertStatus){
+          alertStatus.textContent = show ? 'アラート画面が点灯中。' : 'アラートを閉じました。';
+        }
+      };
+      alertButton.addEventListener('click', () => toggleOverlay(true));
+      if (alertClose){
+        alertClose.addEventListener('click', () => toggleOverlay(false));
+      }
+      alertOverlay.addEventListener('click', (event) => {
+        if (event.target === alertOverlay){
+          toggleOverlay(false);
+        }
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && alertOverlay.classList.contains('is-visible')){
+          toggleOverlay(false);
+        }
+      });
+    }
+  });
+  </script>
 </body>
 </html>

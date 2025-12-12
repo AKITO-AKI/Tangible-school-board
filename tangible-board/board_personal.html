@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Personal Board Demo | TANGIBLE SCHOOL BOARD</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <style>
+    body { background: radial-gradient(1200px 600px at 50% -10%, rgba(255,255,255,0.35), rgba(255,255,255,0.1)), var(--bg); }
+    .personal-demo { max-width: 1280px; margin: 0 auto; padding: 2rem; display: grid; gap: 1rem; }
+    .demo-header { display: flex; justify-content: space-between; align-items: center; }
+    .demo-header h1 { margin: 0; font-size: clamp(1.8rem, 3vw, 2.4rem); }
+    .demo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .panel { background: rgba(255,255,255,0.92); border: 1px solid rgba(0,0,0,0.08); border-radius: 16px; box-shadow: 0 16px 40px rgba(0,0,0,0.12); padding: 1rem; display: grid; gap: 0.8rem; }
+    .panel header { display: flex; justify-content: space-between; align-items: center; }
+    .panel header h2 { margin: 0; font-size: 1.25rem; }
+    .item { border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 0.8rem; background: #fff; display: grid; gap: 0.35rem; }
+    .item.is-due-soon { border-color: rgba(255,190,0,0.55); box-shadow: 0 8px 20px rgba(255,190,0,0.22); }
+    .item.is-overdue { border-color: rgba(200,0,0,0.55); box-shadow: 0 8px 20px rgba(200,0,0,0.22); }
+    .badge { display:inline-block; font-size:0.78rem; font-weight:700; padding:0.2rem 0.5rem; border-radius:999px; }
+    .badge-soon { background: rgba(255,190,0,0.15); color: #7a5a00; border: 1px solid rgba(255,190,0,0.4); }
+    .badge-overdue { background: rgba(200,0,0,0.15); color: #7a0000; border: 1px solid rgba(200,0,0,0.4); }
+    .item-title { font-weight: 700; font-size: 1.1rem; }
+    .item-meta { font-size: 0.9rem; opacity: 0.75; }
+    .empty { color: rgba(0,0,0,0.6); }
+    .ticker { display:flex; gap:0.6rem; align-items:center; border-radius:12px; padding:0.6rem 0.8rem; background: rgba(255,255,255,0.8); border:1px solid rgba(0,0,0,0.08); }
+    .ticker-label { font-weight:600; opacity:0.8; }
+    .ticker-marquee { overflow:hidden; white-space:nowrap; width:100%; }
+    .ticker-marquee span { display:inline-block; padding-left:100%; animation: marquee 18s linear infinite; }
+    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+    @media (max-width: 1020px){ .demo-grid { grid-template-columns: 1fr; } }
+    /* Enhancements */
+    .demo-actions { display:flex; gap:.6rem; align-items:center; }
+    .filters { display:flex; gap:.5rem; align-items:center; }
+    .filter-chip { border:1px solid rgba(0,0,0,0.12); background: rgba(255,255,255,0.85); border-radius:999px; padding:.3rem .7rem; font-size:.9rem; cursor:pointer; }
+    .filter-chip[aria-pressed="true"] { background: #0ea5e9; color:#fff; border-color:#93c5fd; }
+  </style>
+</head>
+<body>
+  <div class="personal-demo">
+    <div class="demo-header">
+      <h1>Personal Board Demo</h1>
+      <div class="demo-actions">
+        <a class="btn" href="./site/tangible_personal.html" target="_blank" rel="noopener">編集ページを開く</a>
+        <div class="filters" role="group" aria-label="表示フィルタ">
+          <button class="filter-chip" type="button" data-filter="all" aria-pressed="true">すべて</button>
+          <button class="filter-chip" type="button" data-filter="today" aria-pressed="false">今日</button>
+          <button class="filter-chip" type="button" data-filter="due-soon" aria-pressed="false">もうすぐ</button>
+          <button class="filter-chip" type="button" data-filter="overdue" aria-pressed="false">期限超過</button>
+        </div>
+      </div>
+    </div>
+    <div class="ticker" aria-label="今日の予定ティッカー">
+      <span class="ticker-label">今日:</span>
+      <div class="ticker-marquee"><span id="tickerText">予定を読み込み中…</span></div>
+    </div>
+    <div class="demo-grid">
+      <section class="panel" aria-labelledby="notesHeading">
+        <header><h2 id="notesHeading">メモ</h2></header>
+        <div id="notesMount"><p class="empty">まだメモがありません。</p></div>
+      </section>
+      <section class="panel" aria-labelledby="remindersHeading">
+        <header><h2 id="remindersHeading">リマインダー</h2></header>
+        <div id="remindersMount"><p class="empty">まだリマインダーがありません。</p></div>
+      </section>
+      <section class="panel" aria-labelledby="focusHeading">
+        <header><h2 id="focusHeading">フォーカス</h2></header>
+        <div id="focusMount"><p class="empty">期限が近いものをここに強調表示します。</p></div>
+      </section>
+    </div>
+  </div>
+  <script>
+    const STORAGE_KEY = 'tsb:personal';
+    let currentFilter = 'all';
+    function loadPersonal(){
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : { notes: [], reminders: [] };
+      } catch { return { notes: [], reminders: [] }; }
+    }
+    function formatDate(d){
+      try { return new Date(d).toLocaleString(); } catch { return String(d || ''); }
+    }
+    function applyFilter(reminders){
+      if (currentFilter === 'all') return reminders;
+      const now = Date.now();
+      if (currentFilter === 'today'){
+        const t = new Date();
+        return reminders.filter(r => r.due && new Date(r.due).toDateString() === t.toDateString());
+      }
+      if (currentFilter === 'due-soon'){
+        return reminders.filter(r => r.due && (new Date(r.due).getTime() - now) / 60000 <= 180 && (new Date(r.due).getTime() - now) > 0);
+      }
+      if (currentFilter === 'overdue'){
+        return reminders.filter(r => r.due && new Date(r.due).getTime() - now <= 0);
+      }
+      return reminders;
+    }
+    function mountList(mount, list, type){
+      mount.innerHTML='';
+      if (!list.length){ mount.innerHTML = '<p class="empty">まだ' + (type==='note'?'メモ':'リマインダー') + 'がありません。</p>'; return; }
+      const source = (type==='reminder') ? applyFilter(list) : list;
+      if (!source.length){ mount.innerHTML = '<p class="empty">条件に合う項目がありません。</p>'; return; }
+      source.forEach(it => {
+        const el = document.createElement('div'); el.className='item';
+        const title = document.createElement('div'); title.className='item-title'; title.textContent = it.title || '(無題)';
+        const body = document.createElement('div'); body.className='item-body'; body.textContent = it.body || '';
+        el.appendChild(title);
+        if (it.body) el.appendChild(body);
+        if (type==='reminder'){
+          const meta = document.createElement('div'); meta.className='item-meta';
+          const dueText = it.due? formatDate(it.due) : 'なし';
+          meta.textContent = '期限: ' + dueText; el.appendChild(meta);
+          if (it.due){
+            const now = Date.now();
+            const diffMin = Math.round((new Date(it.due).getTime() - now) / 60000);
+            const badge = document.createElement('span');
+            if (diffMin <= 0){ badge.textContent='期限超過'; badge.className='badge badge-overdue'; el.classList.add('is-overdue'); }
+            else if (diffMin <= 180){ badge.textContent='もうすぐ'; badge.className='badge badge-soon'; el.classList.add('is-due-soon'); }
+            else { badge.textContent='予定'; badge.className='badge'; }
+            meta.appendChild(document.createTextNode(' '));
+            meta.appendChild(badge);
+          }
+        }
+        mount.appendChild(el);
+      });
+    }
+    function updateTicker(reminders){
+      const textEl = document.getElementById('tickerText');
+      const today = new Date();
+      const todayStrs = reminders
+        .filter(r => r.due && new Date(r.due).toDateString() === today.toDateString())
+        .map(r => `${r.title} (${new Date(r.due).toLocaleTimeString([], { hour:'2-digit', minute:'2-digit' })})`);
+      textEl.textContent = todayStrs.length ? ' ' + todayStrs.join(' ・ ') + ' ' : ' 本日の期限はありません ';
+    }
+    function updateFocus(reminders){
+      const mount = document.getElementById('focusMount');
+      const now = Date.now();
+      const soon = reminders.filter(r => r.due).sort((a,b) => new Date(a.due) - new Date(b.due)).slice(0,3);
+      mount.innerHTML='';
+      if (!soon.length){ mount.innerHTML = '<p class="empty">期限が近いものはありません。</p>'; return; }
+      soon.forEach(r => {
+        const el = document.createElement('div'); el.className='item';
+        const title = document.createElement('div'); title.className='item-title'; title.textContent = r.title || '(無題)';
+        const meta = document.createElement('div'); meta.className='item-meta';
+        const diffMin = Math.round((new Date(r.due).getTime() - now) / 60000);
+        if (diffMin <= 0){ meta.textContent = '期限超過'; el.classList.add('is-overdue'); }
+        else { meta.textContent = `あと${diffMin}分`; if (diffMin <= 180) el.classList.add('is-due-soon'); }
+        el.appendChild(title); el.appendChild(meta);
+        mount.appendChild(el);
+      });
+    }
+    function refresh(){
+      const data = loadPersonal();
+      mountList(document.getElementById('notesMount'), data.notes, 'note');
+      mountList(document.getElementById('remindersMount'), data.reminders, 'reminder');
+      updateTicker(data.reminders);
+      updateFocus(data.reminders);
+    }
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
+    window.addEventListener('storage', (evt) => { if (evt.key === STORAGE_KEY) refresh(); });
+    (function initFilters(){
+      const chips = document.querySelectorAll('.filter-chip');
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          chips.forEach(c => c.setAttribute('aria-pressed','false'));
+          chip.setAttribute('aria-pressed','true');
+          currentFilter = chip.getAttribute('data-filter') || 'all';
+          refresh();
+        });
+      });
+    })();
+    refresh();
+  </script>
+</body>
+</html>

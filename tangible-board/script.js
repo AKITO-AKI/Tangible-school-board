@@ -27,7 +27,9 @@
   const categoryChips = Array.from(
     document.querySelectorAll(".category-chip")
   );
+  const tickerEl = document.getElementById("ticker");
   const tickerTrack = document.getElementById("tickerTrack");
+  const tickerToggleBtn = document.getElementById("tickerToggleBtn");
 
   const writeBtn = document.getElementById("writeBtn");
   const editorSheet = document.getElementById("editorSheet");
@@ -100,6 +102,7 @@
   let currentIndex = 0;
   let slideTimerId = null;
   let categoryTimerId = null;
+  let tickerPaused = false;
 
   let calendarYear;
   let calendarMonth; // 1〜12
@@ -451,6 +454,30 @@
     return `${y}-${m}-${d}`;
   }
 
+  function applyTickerState() {
+    if (!tickerTrack) return;
+    const playState = tickerPaused ? "paused" : "running";
+    tickerTrack.style.animationPlayState = playState;
+    if (tickerEl) {
+      tickerEl.classList.toggle("is-paused", tickerPaused);
+    }
+    if (tickerToggleBtn) {
+      tickerToggleBtn.setAttribute("aria-pressed", tickerPaused ? "true" : "false");
+      tickerToggleBtn.textContent = tickerPaused ? "再生" : "一時停止";
+      tickerToggleBtn.setAttribute(
+        "aria-label",
+        tickerPaused
+          ? "お知らせの自動スクロールを再開"
+          : "お知らせの自動スクロールを一時停止"
+      );
+    }
+  }
+
+  function setTickerPaused(paused) {
+    tickerPaused = paused;
+    applyTickerState();
+  }
+
   function getTodayKey() {
     const now = new Date();
     now.setHours(0, 0, 0, 0);
@@ -537,7 +564,13 @@
   function renderTicker() {
     if (!tickerTrack) return;
     tickerTrack.innerHTML = "";
-    if (!posts.length) return;
+    if (tickerToggleBtn) {
+      tickerToggleBtn.disabled = !posts.length;
+    }
+    if (!posts.length) {
+      applyTickerState();
+      return;
+    }
 
     const sorted = posts
       .slice()
@@ -587,6 +620,7 @@
 
     const seconds = Math.max(25, doubled.length * 4);
     tickerTrack.style.animationDuration = `${seconds}s`;
+    applyTickerState();
   }
 
   function focusPostById(id) {
@@ -1042,8 +1076,10 @@
     const clamped = Math.max(0, Math.min(targetIndex, total - 1));
     const previous = currentIndex;
     if (clamped === previous) return;
+    const forwardSteps = (clamped - previous + total) % total;
+    const backwardSteps = (previous - clamped + total) % total;
     currentIndex = clamped;
-    animateCard(clamped > previous ? "left" : "right");
+    animateCard(forwardSteps <= backwardSteps ? "left" : "right");
     render();
     if (manual) restartSlideTimer();
   }
@@ -1333,6 +1369,23 @@
 
   if (nextPeekBtn) {
     nextPeekBtn.addEventListener("click", () => goNext(true));
+  }
+
+  if (tickerToggleBtn) {
+    tickerToggleBtn.addEventListener("click", () => {
+      setTickerPaused(!tickerPaused);
+    });
+  }
+
+  if (tickerEl && tickerTrack) {
+    tickerEl.addEventListener("mouseenter", () => {
+      if (tickerPaused) return;
+      tickerTrack.style.animationPlayState = "paused";
+    });
+    tickerEl.addEventListener("mouseleave", () => {
+      if (tickerPaused) return;
+      tickerTrack.style.animationPlayState = "running";
+    });
   }
 
   // Board：スワイプ操作
